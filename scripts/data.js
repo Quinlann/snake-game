@@ -4,18 +4,28 @@ const data = {
     createGrid: () => {
         data.canvasWidth = nodes.canvas.getBoundingClientRect().width;
         data.canvasHeight = nodes.canvas.getBoundingClientRect().height;
-        data.columns = Math.floor(data.canvasWidth / data.snakeSize);
-        data.rows = Math.floor(data.canvasHeight / data.snakeSize);
+        data.grid[0] = Math.floor(data.canvasWidth / data.snakeSize);
+        data.grid[1] =Math.floor(data.canvasHeight / data.snakeSize);
+        // make sure the grid has odd number of columns and rows > snake starts at center
+        if(data.grid[0] % 2==0) data.grid[0]--;
+        if(data.grid[1] % 2==0) data.grid[1]--;
 
-        console.log(data.columns,data.rows);
+        data.cellSize = data.canvasWidth /  data.grid[0];
+
+        data.setStartPos();
+    },
+    setStartPos: () => {
+        data.snakePosition.x = Math.ceil(data.grid[0] / 2);
+        data.snakePosition.y = Math.ceil(data.grid[1] / 2);
     },
     grid: [],
+    cellSize: 0,
     snakeSize: 50,
     canvasWidth: null,
     canvasHeight: null,
     snakePosition: {
-        x: 5,
-        y: 5
+        x: 0,
+        y: 0
     },
     columns: 0,
     rows: 0
