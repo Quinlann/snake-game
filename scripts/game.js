@@ -4,58 +4,25 @@ import data from './data.js'
 const game = {
     start: () => {
         game.setSnakeSize();
-        game.moveToPosition();
+        game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+        game.addObstacles();
+        game.renderObstacles();
         game.addControls();
         game.startTicks();
     },
     setSnakeSize: () => {
         nodes.snakeHead.style.width = `${data.cellSize}px`;
     },
-    moveToPosition: () => {
-        console.log(data.grid[0]);
-        console.log(data.snake.x);
-
-        nodes.snakeHead.style.left = `${data.snake.x * data.cellSize}px`;
-        nodes.snakeHead.style.top = `${data.snake.y * data.cellSize}px`;
+    placeAtPosition: (node, pos) => {
+        node.style.left = `${pos[0]}px`;
+        node.style.top = `${pos[1]}px`;
     },
     addControls: () => {
         document.addEventListener('keydown', (event) => {
-            switch (event.code) {
-                case 'KeyW':
-                    game.pressUp();
-                    break;
-
-                case 'ArrowUp':
-                    game.pressUp();
-                    break;
-
-                case 'KeyA':
-                    game.pressLeft();
-                    break;
-
-                case 'ArrowLeft':
-                    game.pressLeft();
-                    break;
-
-                case 'KeyS':
-                    game.pressDown();
-                    break;
-
-                case 'ArrowDown':
-                    game.pressDown();
-                    break;
-
-                case 'KeyD':
-                    game.pressRight();
-                    break;
-
-                case 'ArrowRight':
-                    game.pressRight();
-                    break;
-
-                default:
-                    break;
-            }
+            if(event.code === 'KeyW' || event.code === 'ArrowUp' ) game.pressUp();
+            else if(event.code === 'KeyA' || event.code === 'ArrowLeft' ) game.pressLeft();
+            else if(event.code === 'KeyS' || event.code === 'ArrowDown' ) game.pressDown();
+            else if(event.code === 'KeyD' || event.code === 'ArrowRight' ) game.pressRight();
         });
     },
     pressUp: () => {
@@ -86,25 +53,25 @@ const game = {
             case 'up':
                 if (game.checkCollision(data.snake.x, data.snake.y - 1)) return;
                 data.snake.y--;
-                game.moveToPosition();
+                game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
                 break;
 
             case 'left':
                 if (game.checkCollision(data.snake.x - 1, data.snake.y)) return;
                 data.snake.x--;
-                game.moveToPosition();
+                game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
                 break;
 
             case 'down':
                 if (game.checkCollision(data.snake.x, data.snake.y + 1)) return;
                 data.snake.y++
-                game.moveToPosition();
+                game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
                 break;
 
             case 'right':
                 if (game.checkCollision(data.snake.x + 1, data.snake.y)) return;
                 data.snake.x++
-                game.moveToPosition();
+                game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
                 break;
 
             default:
@@ -132,6 +99,20 @@ const game = {
             console.log('hit top wall');
             return true
         }
+    },
+    addObstacles: () => {
+        data.obstacles.push({
+            type: data.obstacleTypes[0],
+            x: Math.floor(Math.random() * data.grid[0]),
+            y: Math.floor(Math.random() * data.grid[1])
+        });
+    },
+    renderObstacles: () => {
+        data.obstacles.map((obs) => {
+            const obsNode = document.createElement('div');
+            obsNode.classList.add(obs.type);
+            obsNode.style.left
+        });
     }
 }
 

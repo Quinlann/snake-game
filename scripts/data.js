@@ -34,7 +34,9 @@ const data = {
         y: 0,
         direction: 'up'
     },
-    speed: 250
+    speed: 250,
+    obstacleTypes: ['wall'],  
+    obstacles: []  
 }
 
 export default data
