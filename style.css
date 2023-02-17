@@ -8,6 +8,7 @@ img {
 
 * {
     pointer-events: none;
+    box-sizing: border-box;
 
     /* noselect */
     -webkit-touch-callout: none; /* iOS Safari */
@@ -32,4 +33,21 @@ img {
     left: 0px;
     top: 0px;
     transform: translate(-50%, -50%);
+}
+
+#snake-head.up {
+    border-top: 10px solid black;
+    border-radius: 50% 50% 0 0;
+}
+#snake-head.left {
+    border-left: 10px solid black;
+    border-radius: 50% 0 0 50%;
+}
+#snake-head.down {
+    border-bottom: 10px solid black;
+    border-radius: 0 0 50% 50%;
+}
+#snake-head.right {
+    border-right: 10px solid black;
+    border-radius: 0 50% 50% 0;
 }

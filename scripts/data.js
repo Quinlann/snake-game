@@ -15,8 +15,8 @@ const data = {
         data.setStartPos();
     },
     setStartPos: () => {
-        data.snakePosition.x = Math.ceil(data.grid[0] / 2);
-        data.snakePosition.y = Math.ceil(data.grid[1] / 2);
+        data.snake.x = Math.ceil(data.grid[0] / 2);
+        data.snake.y = Math.ceil(data.grid[1] / 2);
     },
     grid: [],
     cellSize: 0,
@@ -28,7 +28,13 @@ const data = {
         y: 0
     },
     columns: 0,
-    rows: 0
+    rows: 0,
+    snake: {
+        x: 0,
+        y: 0,
+        direction: 'up'
+    },
+    speed: 500
 }
 
 export default data
