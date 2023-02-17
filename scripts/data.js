@@ -20,7 +20,7 @@ const data = {
     },
     grid: [],
     cellSize: 0,
-    snakeSize: 50,
+    snakeSize: 25,
     canvasWidth: null,
     canvasHeight: null,
     snakePosition: {
@@ -34,7 +34,7 @@ const data = {
         y: 0,
         direction: 'up'
     },
-    speed: 500
+    speed: 250
 }
 
 export default data
