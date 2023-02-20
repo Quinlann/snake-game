@@ -111,11 +111,13 @@ const game = {
         game.startTicks();
         game.changeDirection('up');
         data.controlsStatus = 'normal';
+        game.startClock();
     },
     stopGame: () => {
         data.controlsStatus = 'inactive';
         data.renderScores();
         game.showHighScores();
+        game.stopClock();
     },
     startTicks: () => {
         game.gameTick = setInterval(() => {
@@ -187,11 +189,20 @@ const game = {
     hideHighScores: () => {
         nodes.highScoresContainer.classList.add('inactive');
     },
-    user: {
-        name: '',
-        time: 0,
-        score: 0,
-        fruit: 0
+    clock: null,
+    startClock: () => {
+        data.user.time = -1;
+        game.updateClock();    
+        game.clock = setInterval(() => {
+            game.updateClock();    
+        }, 1000);
+    },
+    stopClock: () => {
+        clearInterval(game.clock);
+    },
+    updateClock: () => {
+        data.user.time++;
+        nodes.timeStatus.innerText = `Time: ${data.user.time}`;
     }
 }
 

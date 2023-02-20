@@ -99,6 +99,12 @@ const data = {
         nodes.highScoresMainMenu.addEventListener('click', () => {
             console.log('main menu');
         });
+    },
+    user: {
+        name: '',
+        time: 0,
+        score: 0,
+        fruit: 0
     }
 }
 
