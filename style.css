@@ -107,3 +107,10 @@ img {
 #highscores-footer button {
     pointer-events: auto;
 }
+
+.fruit {
+    position: absolute;
+    aspect-ratio: 1;
+    background-color: purple;
+    transform: translate(-50%, -50%);
+}

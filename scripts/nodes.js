@@ -7,6 +7,7 @@ const nodes = {
         nodes.hightScoresTryAgain = document.getElementById('highscores-try-again-btn');
         nodes.highScoresMainMenu = document.getElementById('highscores-main-menu-btn');
         nodes.timeStatus = document.getElementById('time-status');
+        nodes.fruitStatus = document.getElementById('fruit-status');
     }
 }
 

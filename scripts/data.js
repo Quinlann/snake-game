@@ -28,10 +28,17 @@ const data = {
         for (let r = 1; r <= data.grid[1]-1; r++) {
             for (let c = 1; c <= data.grid[0]-1; c++) {
                 let cellIsOccupied = false;
+                
                 // check if there is already an obstacle at that coor
                 data.obstacles.map((obs) => {
                     if(obs.x === c && obs.y === r) cellIsOccupied = true;
                 });
+
+                // check if there is already a fruit at that coor
+                data.fruit.map((fruit) => {
+                    if(fruit.x === c && fruit.y === r) cellIsOccupied = true;
+                });
+
                 // check if coor is occupied by snake head
                 if(data.snake.x === c && data.snake.y === r) cellIsOccupied = true;
                 
@@ -57,7 +64,7 @@ const data = {
         y: 0,
         direction: 'up'
     },
-    speed: 250,
+    speed: 100,
     obstacleTypes: ['wall'],  
     obstacles: [],
     difficulty: 10,
@@ -65,21 +72,21 @@ const data = {
     scores: [
         {
             name: 'David Hayter',
-            fruit: 19,
-            time: 20,
-            score: 39
+            fruit: 4,
+            time: 10,
+            score: 30
         },
         {
             name: 'John Doe',
-            fruit: 12,
-            time: 12,
-            score: 24
+            fruit: 2,
+            time: 6,
+            score: 16
         },
         {
             name: 'Sree Martyn',
-            fruit: 10,
-            time: 10,
-            score: 20
+            fruit: 0,
+            time: 4,
+            score: 4
         },
     ],
     renderScores: () => {
@@ -101,11 +108,14 @@ const data = {
         });
     },
     user: {
-        name: '',
+        name: 'Player One',
         time: 0,
         score: 0,
         fruit: 0
-    }
+    },
+    fruitTypes: ['flower'],
+    fruit: [],
+    fruitRate: 0
 }
 
 export default data

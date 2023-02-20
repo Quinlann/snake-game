@@ -19,30 +19,27 @@ const game = {
     addControls: () => {
         document.addEventListener('keydown', (event) => {
             if (event.code === 'KeyW' || event.code === 'ArrowUp') {
-                if(data.controlsStatus === 'normal') game.pressUp();
-            }
-            else if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
-                if(data.controlsStatus === 'normal') game.pressLeft();
-            }
-            else if (event.code === 'KeyS' || event.code === 'ArrowDown') {
-                if(data.controlsStatus === 'normal') game.pressDown();
-            }
-            else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
-                if(data.controlsStatus === 'normal') game.pressRight();
+                if (data.controlsStatus === 'normal') game.pressUp();
+            } else if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
+                if (data.controlsStatus === 'normal') game.pressLeft();
+            } else if (event.code === 'KeyS' || event.code === 'ArrowDown') {
+                if (data.controlsStatus === 'normal') game.pressDown();
+            } else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
+                if (data.controlsStatus === 'normal') game.pressRight();
             }
         });
     },
     pressUp: () => {
-        if(game.checkValidInput('up')) game.changeDirection('up');
+        if (game.checkValidInput('up')) game.changeDirection('up');
     },
     pressLeft: () => {
-        if(game.checkValidInput('left')) game.changeDirection('left');
+        if (game.checkValidInput('left')) game.changeDirection('left');
     },
     pressDown: () => {
-        if(game.checkValidInput('down')) game.changeDirection('down');
+        if (game.checkValidInput('down')) game.changeDirection('down');
     },
     pressRight: () => {
-        if(game.checkValidInput('right')) game.changeDirection('right');
+        if (game.checkValidInput('right')) game.changeDirection('right');
     },
     changeDirection: (direction) => {
         data.snake.direction = direction;
@@ -56,7 +53,7 @@ const game = {
     },
     checkValidInput: (direction) => {
         if (data.snake.direction === direction) return false
-        if (direction === 'up' && data.snake.direction === 'down') return false 
+        if (direction === 'up' && data.snake.direction === 'down') return false
         if (direction === 'left' && data.snake.direction === 'right') return false
         if (direction === 'down' && data.snake.direction === 'up') return false
         if (direction === 'right' && data.snake.direction === 'left') return false
@@ -66,7 +63,7 @@ const game = {
         switch (data.snake.direction) {
             case 'up':
                 if (game.checkCollision(data.snake.x, data.snake.y - 1)) {
-                    game.stopGame();   
+                    game.stopGame();
                     return
                 }
                 data.snake.y--;
@@ -75,7 +72,7 @@ const game = {
 
             case 'left':
                 if (game.checkCollision(data.snake.x - 1, data.snake.y)) {
-                    game.stopGame();   
+                    game.stopGame();
                     return
                 }
                 data.snake.x--;
@@ -84,7 +81,7 @@ const game = {
 
             case 'down':
                 if (game.checkCollision(data.snake.x, data.snake.y + 1)) {
-                    game.stopGame();   
+                    game.stopGame();
                     return
                 }
                 data.snake.y++
@@ -93,7 +90,7 @@ const game = {
 
             case 'right':
                 if (game.checkCollision(data.snake.x + 1, data.snake.y)) {
-                    game.stopGame();   
+                    game.stopGame();
                     return
                 }
                 data.snake.x++
@@ -115,9 +112,10 @@ const game = {
     },
     stopGame: () => {
         data.controlsStatus = 'inactive';
+        game.stopClock();
+        game.calcUserScore();
         data.renderScores();
         game.showHighScores();
-        game.stopClock();
     },
     startTicks: () => {
         game.gameTick = setInterval(() => {
@@ -130,6 +128,7 @@ const game = {
     gameTick: null,
     checkCollision: (x, y) => {
         let collision = false;
+        
         // collision with canvas walls
         if (x === data.grid[0]) {
             console.log('hit right wall');
@@ -147,15 +146,25 @@ const game = {
             console.log('hit top wall');
             game.stopTicks();
             collision = true;
-        } 
+        }
+        
         // collision with obstacles
         data.obstacles.map((obs) => {
-            if(x === obs.x && y === obs.y) {
+            if (x === obs.x && y === obs.y) {
                 console.log('HIT OBS');
                 game.stopTicks();
                 collision = true;
             }
         });
+
+        // collision with fruit
+        data.fruit.map((fruit) => {
+            if (x === fruit.x && y === fruit.y) {
+                console.log('FRUIT');
+                game.removeFruit(fruit.id, true)
+            }
+        });
+
         return collision
     },
     addObstacles: () => {
@@ -189,12 +198,22 @@ const game = {
     hideHighScores: () => {
         nodes.highScoresContainer.classList.add('inactive');
     },
+    calcUserScore: () => {
+        data.user.score = data.user.time + (data.user.fruit * 5);
+
+        const exisitingScore = data.scores.find(obj => obj.name === data.user.name);
+
+        if (!exisitingScore) data.scores.push(data.user);
+        else if (exisitingScore && data.user.score > exisitingScore.score) Object.assign(existingScore, data.user);
+
+        data.scores.sort((a, b) => b.score - a.score);
+    },
     clock: null,
     startClock: () => {
         data.user.time = -1;
-        game.updateClock();    
+        game.updateClock();
         game.clock = setInterval(() => {
-            game.updateClock();    
+            game.updateClock();
         }, 1000);
     },
     stopClock: () => {
@@ -203,6 +222,67 @@ const game = {
     updateClock: () => {
         data.user.time++;
         nodes.timeStatus.innerText = `Time: ${data.user.time}`;
+
+        if (data.user.time % 4 === 0) {
+            game.addFruit();
+        }
+    },
+    addFruit: () => {
+        data.calcAvailableCells();
+        let chosenCell = data.cells[Math.floor(Math.random() * data.cells.length)],
+            fruitId = 0,
+            lifeSpan = (Math.random() * 20) + 10;
+
+        if(data.fruit.length > 0) {
+            fruitId = data.fruit[data.fruit.length-1].id + 1;
+        }
+        
+        let newFruitObj = {
+            id: fruitId,
+            type: data.fruitTypes[0],
+            x: chosenCell[0],
+            y: chosenCell[1]
+        }
+        
+        data.fruit.push(newFruitObj);
+
+        game.renderFruit(newFruitObj);
+
+        setTimeout(() => {
+            game.removeFruit(fruitId, true);
+        }, lifeSpan * 1000);
+
+    },
+    removeFruit: (fruitId, givePoint) => {
+        for (let f = 0; f < data.fruit.length; f++) {
+            let fruit = data.fruit[f];
+            if (fruitId === fruit.id) {
+                data.fruit.splice(f, 1);
+                
+                let fruitNode = document.querySelector(`.fruit[data-fruit-id="${fruitId}"]`);
+                fruitNode.parentNode.removeChild(fruitNode);
+
+                break
+            }
+        }
+
+        if (givePoint) {
+            data.user.fruit++;
+            game.updateFruitConter();
+        }
+    },
+    updateFruitConter: () => {
+        nodes.fruitStatus.innerText = `Fruit: ${data.user.fruit}`;
+    },
+    renderFruit: (fruitObj) => {
+        const fruitNode = document.createElement('div');
+        fruitNode.classList.add('fruit', fruitObj.type);
+        fruitNode.setAttribute('data-fruit-id', fruitObj.id);
+        fruitNode.style.left = `${fruitObj.x * data.cellSize}px`;
+        fruitNode.style.top = `${fruitObj.y * data.cellSize}px`;
+        fruitNode.style.width = `${data.cellSize}px`;
+
+        nodes.canvas.appendChild(fruitNode);
     }
 }
 
