@@ -51,3 +51,10 @@ img {
     border-right: 10px solid black;
     border-radius: 0 50% 50% 0;
 }
+
+.obstacle {
+    position: absolute;
+    aspect-ratio: 1;
+    background-color: green;
+    transform: translate(-50%, -50%);
+}

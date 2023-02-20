@@ -1,1 +1,2 @@
 - Canvas/level uses the whole screen and adapts to the screen's size
+- Adds obstacles based on difficulty level

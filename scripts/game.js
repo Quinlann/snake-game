@@ -19,10 +19,10 @@ const game = {
     },
     addControls: () => {
         document.addEventListener('keydown', (event) => {
-            if(event.code === 'KeyW' || event.code === 'ArrowUp' ) game.pressUp();
-            else if(event.code === 'KeyA' || event.code === 'ArrowLeft' ) game.pressLeft();
-            else if(event.code === 'KeyS' || event.code === 'ArrowDown' ) game.pressDown();
-            else if(event.code === 'KeyD' || event.code === 'ArrowRight' ) game.pressRight();
+            if (event.code === 'KeyW' || event.code === 'ArrowUp') game.pressUp();
+            else if (event.code === 'KeyA' || event.code === 'ArrowLeft') game.pressLeft();
+            else if (event.code === 'KeyS' || event.code === 'ArrowDown') game.pressDown();
+            else if (event.code === 'KeyD' || event.code === 'ArrowRight') game.pressRight();
         });
     },
     pressUp: () => {
@@ -47,6 +47,11 @@ const game = {
         data.snake.direction = direction;
         nodes.snakeHead.classList.remove('up', 'left', 'down', 'right');
         nodes.snakeHead.classList.add(data.snake.direction);
+
+        // fast response on key stroke
+        game.stopTicks();
+        game.tick();
+        game.startTicks();
     },
     tick: () => {
         switch (data.snake.direction) {
@@ -84,34 +89,63 @@ const game = {
             game.tick();
         }, data.speed);
     },
+    stopTicks: () => {
+        clearInterval(game.gameTick);
+    },
     gameTick: null,
     checkCollision: (x, y) => {
-        if (x >= data.grid[0]) {
+        let collision = false;
+        // collision with canvas walls
+        if (x === data.grid[0]) {
             console.log('hit right wall');
-            return true
-        } else if (x <= 0) {
+            game.stopTicks();
+            collision = true;
+        } else if (x === 0) {
             console.log('hit left wall');
-            return true
-        } else if (y >= data.grid[1]) {
+            game.stopTicks();
+            collision = true;
+        } else if (y === data.grid[1]) {
             console.log('hit bottom wall');
-            return true
-        } else if (y <= 0) {
+            game.stopTicks();
+            collision = true;
+        } else if (y === 0) {
             console.log('hit top wall');
-            return true
-        }
+            game.stopTicks();
+            collision = true;
+        } 
+        // collision with obstacles
+        data.obstacles.map((obs) => {
+            if(x === obs.x && y === obs.y) {
+                console.log('HIT OBS');
+                game.stopTicks();
+                collision = true;
+            }
+        });
+        return collision
     },
     addObstacles: () => {
+        // add more obstacles depending on screen width and difficulty level
+        let numberOfObstacles = Math.ceil((Math.floor(data.grid[0] / 20) * data.difficulty) / 2) + 1
+        for (let i = 0; i < numberOfObstacles; i++) game.addObstacle();
+    },
+    addObstacle: () => {
+        data.calcAvailableCells();
+        let chosenCell = data.cells[Math.floor(Math.random() * data.cells.length)];
         data.obstacles.push({
             type: data.obstacleTypes[0],
-            x: Math.floor(Math.random() * data.grid[0]),
-            y: Math.floor(Math.random() * data.grid[1])
+            x: chosenCell[0],
+            y: chosenCell[1]
         });
     },
     renderObstacles: () => {
         data.obstacles.map((obs) => {
             const obsNode = document.createElement('div');
-            obsNode.classList.add(obs.type);
-            obsNode.style.left
+            obsNode.classList.add('obstacle', obs.type);
+            obsNode.style.left = `${obs.x * data.cellSize}px`;
+            obsNode.style.top = `${obs.y * data.cellSize}px`;
+            obsNode.style.width = `${data.cellSize}px`;
+
+            nodes.canvas.appendChild(obsNode);
         });
     }
 }

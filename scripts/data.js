@@ -18,6 +18,24 @@ const data = {
         data.snake.x = Math.ceil(data.grid[0] / 2);
         data.snake.y = Math.ceil(data.grid[1] / 2);
     },
+    calcAvailableCells: () => {
+        data.cells.length = 0;
+        for (let r = 1; r <= data.grid[1]-1; r++) {
+            for (let c = 1; c <= data.grid[0]-1; c++) {
+                let cellIsOccupied = false;
+                // check if there is already an obstacle at that coor
+                data.obstacles.map((obs) => {
+                    if(obs.x === c && obs.y === r) cellIsOccupied = true;
+                });
+                // check if coor is occupied by snake head
+                if(data.snake.x === c && data.snake.y === r) cellIsOccupied = true;
+                
+                if(cellIsOccupied) continue
+
+                data.cells.push([c,r]);
+            }
+        }
+    },
     grid: [],
     cellSize: 0,
     snakeSize: 25,
@@ -36,7 +54,9 @@ const data = {
     },
     speed: 250,
     obstacleTypes: ['wall'],  
-    obstacles: []  
+    obstacles: [],
+    difficulty: 10,
+    cells: []
 }
 
 export default data
