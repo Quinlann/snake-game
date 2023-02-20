@@ -4,6 +4,6 @@ import game from './scripts/game.js'
 
 window.onload = () => {
     nodes.initialize();
-    data.createGrid();
-    game.start();
+    data.initialize();
+    game.initialize();
 }

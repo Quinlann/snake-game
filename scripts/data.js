@@ -1,6 +1,11 @@
 import nodes from './nodes.js'
+import game from './game.js'
 
 const data = {
+    initialize: () => {
+        data.setupScoreBtns();
+        data.createGrid();
+    },
     createGrid: () => {
         data.canvasWidth = nodes.canvas.getBoundingClientRect().width;
         data.canvasHeight = nodes.canvas.getBoundingClientRect().height;
@@ -56,7 +61,45 @@ const data = {
     obstacleTypes: ['wall'],  
     obstacles: [],
     difficulty: 10,
-    cells: []
+    cells: [],
+    scores: [
+        {
+            name: 'David Hayter',
+            fruit: 19,
+            time: 20,
+            score: 39
+        },
+        {
+            name: 'John Doe',
+            fruit: 12,
+            time: 12,
+            score: 24
+        },
+        {
+            name: 'Sree Martyn',
+            fruit: 10,
+            time: 10,
+            score: 20
+        },
+    ],
+    renderScores: () => {
+        nodes.scoresList.innerHTML = '';
+        data.scores.map((user) => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `<span>${user.name}</span> <span>Fruit: ${user.fruit}</span> <span>Time: ${user.time}</span> <span>SCORE: ${user.score}</span>`
+            
+            nodes.scoresList.appendChild(listItem);            
+        });
+    },
+    controlsStatus: 'normal',
+    setupScoreBtns: () => {
+        nodes.scoresTryAgain.addEventListener('click', () => {
+            game.startGame();
+        });
+        nodes.scoresMainMenu.addEventListener('click', () => {
+            console.log('main menu');
+        });
+    }
 }
 
 export default data

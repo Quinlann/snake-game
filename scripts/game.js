@@ -2,13 +2,12 @@ import nodes from './nodes.js'
 import data from './data.js'
 
 const game = {
-    start: () => {
+    initialize: () => {
         game.setSnakeSize();
-        game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
         game.addObstacles();
         game.renderObstacles();
         game.addControls();
-        game.startTicks();
+        game.startGame();
     },
     setSnakeSize: () => {
         nodes.snakeHead.style.width = `${data.cellSize}px`;
@@ -19,62 +18,84 @@ const game = {
     },
     addControls: () => {
         document.addEventListener('keydown', (event) => {
-            if (event.code === 'KeyW' || event.code === 'ArrowUp') game.pressUp();
-            else if (event.code === 'KeyA' || event.code === 'ArrowLeft') game.pressLeft();
-            else if (event.code === 'KeyS' || event.code === 'ArrowDown') game.pressDown();
-            else if (event.code === 'KeyD' || event.code === 'ArrowRight') game.pressRight();
+            if (event.code === 'KeyW' || event.code === 'ArrowUp') {
+                if(data.controlsStatus === 'normal') game.pressUp();
+            }
+            else if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
+                if(data.controlsStatus === 'normal') game.pressLeft();
+            }
+            else if (event.code === 'KeyS' || event.code === 'ArrowDown') {
+                if(data.controlsStatus === 'normal') game.pressDown();
+            }
+            else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
+                if(data.controlsStatus === 'normal') game.pressRight();
+            }
         });
     },
     pressUp: () => {
-        game.changeDirection('up');
+        if(game.checkValidInput('up')) game.changeDirection('up');
     },
     pressLeft: () => {
-        game.changeDirection('left');
+        if(game.checkValidInput('left')) game.changeDirection('left');
     },
     pressDown: () => {
-        game.changeDirection('down');
+        if(game.checkValidInput('down')) game.changeDirection('down');
     },
     pressRight: () => {
-        game.changeDirection('right');
+        if(game.checkValidInput('right')) game.changeDirection('right');
     },
     changeDirection: (direction) => {
-        if (data.snake.direction === direction) return
-        if (direction === 'up' && data.snake.direction === 'down') return
-        if (direction === 'left' && data.snake.direction === 'right') return
-        if (direction === 'down' && data.snake.direction === 'up') return
-        if (direction === 'right' && data.snake.direction === 'left') return
-
         data.snake.direction = direction;
         nodes.snakeHead.classList.remove('up', 'left', 'down', 'right');
         nodes.snakeHead.classList.add(data.snake.direction);
 
-        // fast response on key stroke
+        // emmidiate response on key stroke, not wait for next tick
         game.stopTicks();
         game.tick();
         game.startTicks();
     },
+    checkValidInput: (direction) => {
+        if (data.snake.direction === direction) return false
+        if (direction === 'up' && data.snake.direction === 'down') return false 
+        if (direction === 'left' && data.snake.direction === 'right') return false
+        if (direction === 'down' && data.snake.direction === 'up') return false
+        if (direction === 'right' && data.snake.direction === 'left') return false
+        return true
+    },
     tick: () => {
         switch (data.snake.direction) {
             case 'up':
-                if (game.checkCollision(data.snake.x, data.snake.y - 1)) return;
+                if (game.checkCollision(data.snake.x, data.snake.y - 1)) {
+                    game.stopGame();   
+                    return
+                }
                 data.snake.y--;
                 game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
                 break;
 
             case 'left':
-                if (game.checkCollision(data.snake.x - 1, data.snake.y)) return;
+                if (game.checkCollision(data.snake.x - 1, data.snake.y)) {
+                    game.stopGame();   
+                    return
+                }
                 data.snake.x--;
                 game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
                 break;
 
             case 'down':
-                if (game.checkCollision(data.snake.x, data.snake.y + 1)) return;
+                if (game.checkCollision(data.snake.x, data.snake.y + 1)) {
+                    game.stopGame();   
+                    return
+                }
                 data.snake.y++
                 game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
                 break;
 
             case 'right':
-                if (game.checkCollision(data.snake.x + 1, data.snake.y)) return;
+                if (game.checkCollision(data.snake.x + 1, data.snake.y)) {
+                    game.stopGame();   
+                    return
+                }
                 data.snake.x++
                 game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
                 break;
@@ -82,7 +103,19 @@ const game = {
             default:
                 break;
         }
-
+    },
+    startGame: () => {
+        game.hideHighScores();
+        data.setStartPos();
+        game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+        game.startTicks();
+        game.changeDirection('up');
+        data.controlsStatus = 'normal';
+    },
+    stopGame: () => {
+        data.controlsStatus = 'inactive';
+        data.renderScores();
+        game.showHighScores();
     },
     startTicks: () => {
         game.gameTick = setInterval(() => {
@@ -147,6 +180,12 @@ const game = {
 
             nodes.canvas.appendChild(obsNode);
         });
+    },
+    showHighScores: () => {
+        nodes.scoresContainer.classList.remove('inactive');
+    },
+    hideHighScores: () => {
+        nodes.scoresContainer.classList.add('inactive');
     }
 }
 

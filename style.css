@@ -58,3 +58,47 @@ img {
     background-color: green;
     transform: translate(-50%, -50%);
 }
+
+#high-scores-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#high-scores-container.inactive {
+    display: none;
+}
+
+#high-scores {
+    background-color: white;
+    padding: 20px;
+}
+
+#high-scores-header {
+    text-align: center;
+    margin-top: 0;
+}
+
+#scores {
+    line-height: 1.5;
+}
+
+#scores ol {
+    padding-left: 20px;
+    text-align: left;
+}
+
+#scores-footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+#scores-footer button {
+    pointer-events: auto;
+}
