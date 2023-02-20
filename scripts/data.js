@@ -50,7 +50,7 @@ const data = {
     },
     grid: [],
     cellSize: 0,
-    snakeSize: 25,
+    snakeSize: 30,
     canvasWidth: null,
     canvasHeight: null,
     snakePosition: {
@@ -115,7 +115,8 @@ const data = {
     },
     fruitTypes: ['flower'],
     fruit: [],
-    fruitRate: 0
+    fruitRate: 0,
+    tail: []
 }
 
 export default data

@@ -11,10 +11,26 @@ const game = {
     },
     setSnakeSize: () => {
         nodes.snakeHead.style.width = `${data.cellSize}px`;
+        nodes.canvas.style.backgroundSize = `${data.cellSize}px`;
     },
     placeAtPosition: (node, pos) => {
         node.style.left = `${pos[0]}px`;
         node.style.top = `${pos[1]}px`;
+    },
+    addTail: () => {
+        data.tail.push({
+
+        });
+        game.renderTail();
+    },
+    renderTail: () => {
+        const tailNode = document.createElement('div');
+            tailNode.classList.add('tail');
+            tailNode.style.left = `${data.snake.x * data.cellSize}px`;
+            tailNode.style.top = `${data.snake.y * data.cellSize}px`;
+            tailNode.style.width = `${data.cellSize}px`;
+
+        nodes.canvas.appendChild(tailNode);
     },
     addControls: () => {
         document.addEventListener('keydown', (event) => {
@@ -161,7 +177,8 @@ const game = {
         data.fruit.map((fruit) => {
             if (x === fruit.x && y === fruit.y) {
                 console.log('FRUIT');
-                game.removeFruit(fruit.id, true)
+                game.removeFruit(fruit.id, true);
+                game.addTail();
             }
         });
 

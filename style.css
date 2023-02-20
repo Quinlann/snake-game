@@ -24,6 +24,7 @@ img {
     background-color: red;
     width: 100vw;
     height: 75vh;
+    background-image: url(./assets/perleplade_texture.png);
 }
 
 #snake-head {
@@ -112,5 +113,12 @@ img {
     position: absolute;
     aspect-ratio: 1;
     background-color: purple;
+    transform: translate(-50%, -50%);
+}
+
+.tail {
+    position: absolute;
+    aspect-ratio: 1;
+    background-color: blue;
     transform: translate(-50%, -50%);
 }
