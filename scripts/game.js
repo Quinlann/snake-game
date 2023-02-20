@@ -182,10 +182,16 @@ const game = {
         });
     },
     showHighScores: () => {
-        nodes.scoresContainer.classList.remove('inactive');
+        nodes.highScoresContainer.classList.remove('inactive');
     },
     hideHighScores: () => {
-        nodes.scoresContainer.classList.add('inactive');
+        nodes.highScoresContainer.classList.add('inactive');
+    },
+    user: {
+        name: '',
+        time: 0,
+        score: 0,
+        fruit: 0
     }
 }
 

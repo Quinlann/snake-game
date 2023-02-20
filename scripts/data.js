@@ -83,20 +83,20 @@ const data = {
         },
     ],
     renderScores: () => {
-        nodes.scoresList.innerHTML = '';
+        nodes.highScoresList.innerHTML = '';
         data.scores.map((user) => {
             const listItem = document.createElement('li');
             listItem.innerHTML = `<span>${user.name}</span> <span>Fruit: ${user.fruit}</span> <span>Time: ${user.time}</span> <span>SCORE: ${user.score}</span>`
             
-            nodes.scoresList.appendChild(listItem);            
+            nodes.highScoresList.appendChild(listItem);            
         });
     },
     controlsStatus: 'normal',
     setupScoreBtns: () => {
-        nodes.scoresTryAgain.addEventListener('click', () => {
+        nodes.hightScoresTryAgain.addEventListener('click', () => {
             game.startGame();
         });
-        nodes.scoresMainMenu.addEventListener('click', () => {
+        nodes.highScoresMainMenu.addEventListener('click', () => {
             console.log('main menu');
         });
     }
