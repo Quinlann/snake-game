@@ -69,7 +69,7 @@ const data = {
         y: 0,
         direction: 'up'
     },
-    speed: 100,
+    speed: 200,
     obstacleTypes: ['wall'],  
     obstacles: [],
     difficulty: 75,

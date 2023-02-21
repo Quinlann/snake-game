@@ -328,8 +328,8 @@ const game = {
         nodes.timeStatus.innerText = `Time: ${data.user.time}`;
 
         if (data.user.time % 4 === 0) {
-            game.addFruit();
-            game.addFruit();
+            const addedFruitNum = Math.floor(data.grid[0] / 10);
+            for (let f = 0; f < addedFruitNum; f++) game.addFruit();
         }
     },
     addFruit: () => {
@@ -374,6 +374,14 @@ const game = {
         if (givePoint) {
             data.user.fruit++;
             game.updateFruitConter();
+            
+            // faster and faster speed, max speed = 100ms pr tick
+            if(data.speed <= 100) return
+            game.stopTicks();
+            data.speed = data.speed - (data.user.fruit * 10);
+            if(data.speed < 100) data.speed = 100;
+            console.log(data.speed);
+            game.startTicks();
         }
     },
     updateFruitConter: () => {
