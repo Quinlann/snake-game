@@ -380,6 +380,14 @@ const game = {
 
         nodes.canvas.appendChild(fruitNode);
     },
+    removeAllFruit: () => {
+        const fruitNodes = document.querySelectorAll('.fruit');
+        for (let o = 0; o < fruitNodes.length; o++) {
+            const fruitNode = fruitNodes[o];
+            fruitNode.parentNode.removeChild(fruitNode);
+        }
+        data.fruit.length = 0;
+    },
     resetFruitCounter: () => {
         data.user.fruit = 0;
         game.updateFruitConter();
