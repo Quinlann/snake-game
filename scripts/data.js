@@ -25,8 +25,8 @@ const data = {
     },
     calcAvailableCells: () => {
         data.cells.length = 0;
-        for (let r = 1; r <= data.grid[1]-1; r++) {
-            for (let c = 1; c <= data.grid[0]-1; c++) {
+        for (let r = 2; r <= data.grid[1]-2; r++) {
+            for (let c = 2; c <= data.grid[0]-2; c++) {
                 let cellIsOccupied = false;
                 
                 // check if there is already an obstacle at that coor
@@ -124,7 +124,10 @@ const data = {
     fruitTypes: ['flower'],
     fruit: [],
     fruitRate: 0,
-    tail: []
+    tail: [],
+    resetTickSpeed: () => {
+        data.speed = 200;  
+    },
 }
 
 export default data

@@ -203,6 +203,7 @@ const game = {
         game.removeObstacles();
         game.removeTail();
         game.resetFruitCounter();
+        data.resetTickSpeed();
     },
     startTicks: () => {
         game.gameTick = setInterval(() => {
@@ -376,11 +377,12 @@ const game = {
             game.updateFruitConter();
             
             // faster and faster speed, max speed = 100ms pr tick
-            if(data.speed <= 100) return
+            if(data.speed <= 100) {
+                data.speed = 100;
+                return
+            } 
             game.stopTicks();
-            data.speed = data.speed - (data.user.fruit * 10);
-            if(data.speed < 100) data.speed = 100;
-            console.log(data.speed);
+            data.speed--;
             game.startTicks();
         }
     },
