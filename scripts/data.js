@@ -39,8 +39,13 @@ const data = {
                     if(fruit.x === c && fruit.y === r) cellIsOccupied = true;
                 });
 
-                // check if coor is occupied by snake head
-                if(data.snake.x === c && data.snake.y === r) cellIsOccupied = true;
+                // check if there is a tail at that coor
+                data.tail.map((tail) => {
+                    if(tail.x === c && tail.y === r) cellIsOccupied = true;
+                });
+
+                // don't place anything on the same row or column as snake head
+                if(data.snake.x === c || data.snake.y === r) cellIsOccupied = true;
                 
                 if(cellIsOccupied) continue
 
@@ -67,7 +72,7 @@ const data = {
     speed: 100,
     obstacleTypes: ['wall'],  
     obstacles: [],
-    difficulty: 10,
+    difficulty: 75,
     cells: [],
     scores: [
         {

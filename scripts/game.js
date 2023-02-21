@@ -336,6 +336,8 @@ const game = {
             fruitId = 0,
             lifeSpan = (Math.random() * 20) + 10;
 
+        console.log(lifeSpan);
+
         if(data.fruit.length > 0) {
             fruitId = data.fruit[data.fruit.length-1].id + 1;
         }
@@ -352,7 +354,7 @@ const game = {
         game.renderFruit(newFruitObj);
 
         setTimeout(() => {
-            game.removeFruit(fruitId, true);
+            game.removeFruit(fruitId, false);
         }, lifeSpan * 1000);
 
     },
