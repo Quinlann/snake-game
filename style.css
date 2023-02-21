@@ -74,8 +74,8 @@ button:hover {
 .obstacle {
     position: absolute;
     aspect-ratio: 1;
-    background-color: green;
     transform: translate(-50%, -50%);
+    background-image: url(./assets/wall_texture.png);
 }
 
 #highscores-container {
@@ -121,14 +121,14 @@ button:hover {
 .fruit {
     position: absolute;
     aspect-ratio: 1;
-    background-color: purple;
+    background-image: url(./assets/fruit_texture.png);
     transform: translate(-50%, -50%);
 }
 
 .tail {
     position: absolute;
     aspect-ratio: 1;
-    background-color: blue;
+    background-image: url(./assets/tail_texture.png);
     transform: translate(-50%, -50%);
 }
 

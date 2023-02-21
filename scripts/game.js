@@ -36,7 +36,6 @@ const game = {
         node.style.top = `${pos[1]}px`;
     },
     addStartTail: () => {
-        
         for (let i = 0; i < 3; i++) {
             const [tailId,x,y] = [data.tail.length, data.snake.x, data.snake.y - (i+1)];
             data.tail.push({
@@ -75,6 +74,7 @@ const game = {
             tailNode.style.left = `${x * data.cellSize}px`;
             tailNode.style.top = `${y * data.cellSize}px`;
             tailNode.style.width = `${data.cellSize}px`;
+            tailNode.style.backgroundSize = `${data.cellSize}px`;
 
         nodes.canvas.appendChild(tailNode);
     },
@@ -283,6 +283,7 @@ const game = {
             obsNode.style.left = `${obs.x * data.cellSize}px`;
             obsNode.style.top = `${obs.y * data.cellSize}px`;
             obsNode.style.width = `${data.cellSize}px`;
+            obsNode.style.backgroundSize = `${data.cellSize}px`;
 
             nodes.canvas.appendChild(obsNode);
         });
@@ -336,8 +337,6 @@ const game = {
             fruitId = 0,
             lifeSpan = (Math.random() * 20) + 10;
 
-        console.log(lifeSpan);
-
         if(data.fruit.length > 0) {
             fruitId = data.fruit[data.fruit.length-1].id + 1;
         }
@@ -386,6 +385,7 @@ const game = {
         fruitNode.style.left = `${fruitObj.x * data.cellSize}px`;
         fruitNode.style.top = `${fruitObj.y * data.cellSize}px`;
         fruitNode.style.width = `${data.cellSize}px`;
+        fruitNode.style.backgroundSize = `${data.cellSize}px`;
 
         nodes.canvas.appendChild(fruitNode);
     },
