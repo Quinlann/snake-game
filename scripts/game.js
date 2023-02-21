@@ -376,7 +376,8 @@ const game = {
             data.user.fruit++;
             game.updateFruitConter();
             
-            // faster and faster speed, max speed = 100ms pr tick
+            // faster and faster speed, max speed = 100ms pr tick (not ready)
+            return
             if(data.speed <= 100) {
                 data.speed = 100;
                 return
