@@ -329,6 +329,7 @@ const game = {
 
         if (data.user.time % 4 === 0) {
             game.addFruit();
+            game.addFruit();
         }
     },
     addFruit: () => {

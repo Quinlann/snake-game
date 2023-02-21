@@ -89,16 +89,16 @@ const data = {
         },
         {
             name: 'Salazar Slytherin',
-            fruit: 88,
-            time: 222,
-            score: 662
+            fruit: 11,
+            time: 67,
+            score: 122
         },
     ],
     renderScores: () => {
         nodes.highScoresList.innerHTML = '';
         data.scores.map((user) => {
             const listItem = document.createElement('li');
-            listItem.innerHTML = `<span>${user.name}</span> <span>Fruit: ${user.fruit}</span> <span>Time: ${user.time}</span> <span>SCORE: ${user.score}</span>`
+            listItem.innerHTML = `<span>${user.name}</span> | <span>Fruit: ${user.fruit}</span> | <span>Time: ${user.time}</span> | <span>SCORE: ${user.score}</span>`
             
             nodes.highScoresList.appendChild(listItem);            
         });
@@ -115,7 +115,7 @@ const data = {
         });
     },
     user: {
-        name: 'Player One',
+        name: 'Player 1',
         time: 0,
         score: 0,
         fruit: 0

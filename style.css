@@ -166,3 +166,17 @@ button:hover {
 #splashscreen button {
     pointer-events: auto;
 }
+
+#username-container {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+#username, .game-stat {
+    background-color: white;
+    padding: 10px;
+}
