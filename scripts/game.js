@@ -4,10 +4,21 @@ import data from './data.js'
 const game = {
     initialize: () => {
         game.setSnakeSize();
-        game.addObstacles();
-        game.renderObstacles();
         game.addControls();
-        game.startGame();
+        game.setupStartBtn();
+        game.showSplash();
+    },
+    showSplash: () => {
+        nodes.splashContainer.classList.remove('inactive');
+    },
+    hideSplash: () => {
+        nodes.splashContainer.classList.add('inactive');
+    },
+    setupStartBtn: () => {
+        nodes.splashStartBtn.addEventListener('click', () => {
+            game.resetGame();
+            game.startGame();
+        });
     },
     setSnakeSize: () => {
         nodes.snakeHead.style.width = `${data.cellSize}px`;
@@ -17,20 +28,57 @@ const game = {
         node.style.left = `${pos[0]}px`;
         node.style.top = `${pos[1]}px`;
     },
-    addTail: () => {
-        data.tail.push({
-
-        });
-        game.renderTail();
+    addStartTail: () => {
+        
+        for (let i = 0; i < 3; i++) {
+            const [tailId,x,y] = [data.tail.length, data.snake.x, data.snake.y - (i+1)];
+            data.tail.push({
+                id: tailId,
+                x: x,
+                y: y
+            });
+            game.renderTail(x,y,tailId);
+        }
     },
-    renderTail: () => {
+    updateTail: () => {
+        game.addTail(data.snake.x, data.snake.y);
+        game.removeTailEnd();
+    },
+    extendTail: () => {
+        game.addTail(data.snake.x, data.snake.y);
+    },
+    addTail: (x,y) => {
+        const tailId = data.tail.length === 0 ? 0 : data.tail[data.tail.length-1].id + 1;
+        data.tail.push({
+            id: tailId,
+            x: x,
+            y: y
+        });
+        game.renderTail(x,y,tailId);
+    },
+    removeTailEnd: () => {
+        const removedTailEnd = data.tail.shift(),
+        tailEndNode = document.querySelector(`.tail[data-tail-id="${removedTailEnd.id}"]`);
+        tailEndNode.parentNode.removeChild(tailEndNode);
+    },
+    renderTail: (x,y,id) => {
         const tailNode = document.createElement('div');
             tailNode.classList.add('tail');
-            tailNode.style.left = `${data.snake.x * data.cellSize}px`;
-            tailNode.style.top = `${data.snake.y * data.cellSize}px`;
+            tailNode.setAttribute('data-tail-id',id);
+            tailNode.style.left = `${x * data.cellSize}px`;
+            tailNode.style.top = `${y * data.cellSize}px`;
             tailNode.style.width = `${data.cellSize}px`;
 
         nodes.canvas.appendChild(tailNode);
+    },
+    removeTail: () => {
+        const allTailNodes = document.querySelectorAll('.tail');
+        
+        for (let t = 0; t < allTailNodes.length; t++) {
+            const tailNode = allTailNodes[t];
+            tailNode.parentNode.removeChild(tailNode);
+        }
+        data.tail.length = 0;
     },
     addControls: () => {
         document.addEventListener('keydown', (event) => {
@@ -84,6 +132,7 @@ const game = {
                 }
                 data.snake.y--;
                 game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+                game.updateTail();
                 break;
 
             case 'left':
@@ -93,6 +142,7 @@ const game = {
                 }
                 data.snake.x--;
                 game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+                game.updateTail();
                 break;
 
             case 'down':
@@ -102,6 +152,7 @@ const game = {
                 }
                 data.snake.y++
                 game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+                game.updateTail();
                 break;
 
             case 'right':
@@ -111,6 +162,7 @@ const game = {
                 }
                 data.snake.x++
                 game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+                game.updateTail();
                 break;
 
             default:
@@ -119,8 +171,12 @@ const game = {
     },
     startGame: () => {
         game.hideHighScores();
+        game.hideSplash();
         data.setStartPos();
         game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+        game.addStartTail();
+        game.addObstacles();
+        game.renderObstacles();
         game.startTicks();
         game.changeDirection('up');
         data.controlsStatus = 'normal';
@@ -132,6 +188,11 @@ const game = {
         game.calcUserScore();
         data.renderScores();
         game.showHighScores();
+    },
+    resetGame: () => {
+        game.removeObstacles();
+        game.removeTail();
+        game.resetFruitCounter();
     },
     startTicks: () => {
         game.gameTick = setInterval(() => {
@@ -173,12 +234,22 @@ const game = {
             }
         });
 
+        // collision with tail
+        for (let t = 1; t < data.tail.length; t++) {
+            const tailPart = data.tail[t];
+            if (x === tailPart.x && y === tailPart.y) {
+                console.log('HIT TAIL');
+                game.stopTicks();
+                collision = true;
+            }
+        }
+
         // collision with fruit
         data.fruit.map((fruit) => {
             if (x === fruit.x && y === fruit.y) {
                 console.log('FRUIT');
                 game.removeFruit(fruit.id, true);
-                game.addTail();
+                game.extendTail();
             }
         });
 
@@ -208,6 +279,14 @@ const game = {
 
             nodes.canvas.appendChild(obsNode);
         });
+    },
+    removeObstacles: () => {
+        const obstacleNodes = document.querySelectorAll('.obstacle');
+        for (let o = 0; o < obstacleNodes.length; o++) {
+            const obsNode = obstacleNodes[o];
+            obsNode.parentNode.removeChild(obsNode);
+        }
+        data.obstacles.length = 0;
     },
     showHighScores: () => {
         nodes.highScoresContainer.classList.remove('inactive');
@@ -300,6 +379,10 @@ const game = {
         fruitNode.style.width = `${data.cellSize}px`;
 
         nodes.canvas.appendChild(fruitNode);
+    },
+    resetFruitCounter: () => {
+        data.user.fruit = 0;
+        game.updateFruitConter();
     }
 }
 

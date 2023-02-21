@@ -101,10 +101,12 @@ const data = {
     controlsStatus: 'normal',
     setupScoreBtns: () => {
         nodes.hightScoresTryAgain.addEventListener('click', () => {
+            game.resetGame();
             game.startGame();
         });
         nodes.highScoresMainMenu.addEventListener('click', () => {
-            console.log('main menu');
+            game.hideHighScores();
+            game.showSplash();
         });
     },
     user: {

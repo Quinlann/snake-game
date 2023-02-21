@@ -8,6 +8,8 @@ const nodes = {
         nodes.highScoresMainMenu = document.getElementById('highscores-main-menu-btn');
         nodes.timeStatus = document.getElementById('time-status');
         nodes.fruitStatus = document.getElementById('fruit-status');
+        nodes.splashContainer = document.getElementById('splashscreen-container');
+        nodes.splashStartBtn = document.getElementById('splash-start-game-btn');
     }
 }
 
