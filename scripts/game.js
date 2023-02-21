@@ -5,6 +5,7 @@ const game = {
     initialize: () => {
         game.setSnakeSize();
         game.addControls();
+        game.loadUserCookie();
         game.setupSplashScreenBtns();
         game.setupUsernameInput();
         game.showSplash();
@@ -17,7 +18,7 @@ const game = {
     },
     setupSplashScreenBtns: () => {
         nodes.splashStartBtn.addEventListener('click', () => {
-            if(!data.user.name) return
+            if (!data.user.name) return
             game.resetGame();
             game.startGame();
         });
@@ -39,13 +40,13 @@ const game = {
     },
     addStartTail: () => {
         for (let i = 0; i < 3; i++) {
-            const [tailId,x,y] = [data.tail.length, data.snake.x, data.snake.y - (i+1)];
+            const [tailId, x, y] = [data.tail.length, data.snake.x, data.snake.y - (i + 1)];
             data.tail.push({
                 id: tailId,
                 x: x,
                 y: y
             });
-            game.renderTail(x,y,tailId);
+            game.renderTail(x, y, tailId);
         }
     },
     updateTail: () => {
@@ -55,34 +56,34 @@ const game = {
     extendTail: () => {
         game.addTail(data.snake.x, data.snake.y);
     },
-    addTail: (x,y) => {
-        const tailId = data.tail.length === 0 ? 0 : data.tail[data.tail.length-1].id + 1;
+    addTail: (x, y) => {
+        const tailId = data.tail.length === 0 ? 0 : data.tail[data.tail.length - 1].id + 1;
         data.tail.push({
             id: tailId,
             x: x,
             y: y
         });
-        game.renderTail(x,y,tailId);
+        game.renderTail(x, y, tailId);
     },
     removeTailEnd: () => {
         const removedTailEnd = data.tail.shift(),
-        tailEndNode = document.querySelector(`.tail[data-tail-id="${removedTailEnd.id}"]`);
+            tailEndNode = document.querySelector(`.tail[data-tail-id="${removedTailEnd.id}"]`);
         tailEndNode.parentNode.removeChild(tailEndNode);
     },
-    renderTail: (x,y,id) => {
+    renderTail: (x, y, id) => {
         const tailNode = document.createElement('div');
-            tailNode.classList.add('tail');
-            tailNode.setAttribute('data-tail-id',id);
-            tailNode.style.left = `${x * data.cellSize}px`;
-            tailNode.style.top = `${y * data.cellSize}px`;
-            tailNode.style.width = `${data.cellSize}px`;
-            tailNode.style.backgroundSize = `${data.cellSize}px`;
+        tailNode.classList.add('tail');
+        tailNode.setAttribute('data-tail-id', id);
+        tailNode.style.left = `${x * data.cellSize}px`;
+        tailNode.style.top = `${y * data.cellSize}px`;
+        tailNode.style.width = `${data.cellSize}px`;
+        tailNode.style.backgroundSize = `${data.cellSize}px`;
 
         nodes.canvas.appendChild(tailNode);
     },
     removeTail: () => {
         const allTailNodes = document.querySelectorAll('.tail');
-        
+
         for (let t = 0; t < allTailNodes.length; t++) {
             const tailNode = allTailNodes[t];
             tailNode.parentNode.removeChild(tailNode);
@@ -214,7 +215,7 @@ const game = {
     gameTick: null,
     checkCollision: (x, y) => {
         let collision = false;
-        
+
         // collision with canvas walls
         if (x === data.grid[0]) {
             game.stopTicks();
@@ -229,7 +230,7 @@ const game = {
             game.stopTicks();
             collision = true;
         }
-        
+
         // collision with obstacles
         data.obstacles.map((obs) => {
             if (x === obs.x && y === obs.y) {
@@ -299,11 +300,15 @@ const game = {
     },
     calcUserScore: () => {
         const exisitingScore = data.scores.find(x => x.name === data.user.name);
-        
+
         data.user.score = data.user.time + (data.user.fruit * 5);
 
         if (!exisitingScore) data.scores.push(Object.assign({}, data.user));
-        else if (exisitingScore && data.user.score > exisitingScore.score) Object.assign(exisitingScore, data.user);
+        else if (exisitingScore && data.user.score > exisitingScore.score) {
+            Object.assign(exisitingScore, data.user);
+        }
+
+        game.saveUserCookie(data.user);
 
         data.scores.sort((a, b) => b.score - a.score);
     },
@@ -333,17 +338,17 @@ const game = {
             fruitId = 0,
             lifeSpan = (Math.random() * 20) + 10;
 
-        if(data.fruit.length > 0) {
-            fruitId = data.fruit[data.fruit.length-1].id + 1;
+        if (data.fruit.length > 0) {
+            fruitId = data.fruit[data.fruit.length - 1].id + 1;
         }
-        
+
         let newFruitObj = {
             id: fruitId,
             type: data.fruitTypes[0],
             x: chosenCell[0],
             y: chosenCell[1]
         }
-        
+
         data.fruit.push(newFruitObj);
 
         game.renderFruit(newFruitObj);
@@ -358,7 +363,7 @@ const game = {
             let fruit = data.fruit[f];
             if (fruitId === fruit.id) {
                 data.fruit.splice(f, 1);
-                
+
                 let fruitNode = document.querySelector(`.fruit[data-fruit-id="${fruitId}"]`);
                 fruitNode.parentNode.removeChild(fruitNode);
 
@@ -405,6 +410,21 @@ const game = {
     },
     updateUsernameHud: () => {
         nodes.username.innerText = data.user.name;
+    },
+    saveUserCookie: (user) => {
+        document.cookie = `user_${data.user.name}=${JSON.stringify(user)}; expires=Thu, 18 Dec 2023 12:00:00 UTC; path=/`;
+    },
+    loadUserCookie: () => {
+        const cookieValues = document.cookie.split('; ').filter(row => row.startsWith('user_'));
+        
+        if (cookieValues) {
+            cookieValues.map((cookieValue) => {
+                const userObj = JSON.parse(cookieValue.split('=')[1]);
+                data.scores.push(Object.assign({},userObj));
+            });
+        } else {
+            return null;
+        }
     }
 }
 
