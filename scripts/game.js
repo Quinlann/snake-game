@@ -217,19 +217,15 @@ const game = {
         
         // collision with canvas walls
         if (x === data.grid[0]) {
-            console.log('hit right wall');
             game.stopTicks();
             collision = true;
         } else if (x === 0) {
-            console.log('hit left wall');
             game.stopTicks();
             collision = true;
         } else if (y === data.grid[1]) {
-            console.log('hit bottom wall');
             game.stopTicks();
             collision = true;
         } else if (y === 0) {
-            console.log('hit top wall');
             game.stopTicks();
             collision = true;
         }
@@ -237,7 +233,6 @@ const game = {
         // collision with obstacles
         data.obstacles.map((obs) => {
             if (x === obs.x && y === obs.y) {
-                console.log('HIT OBS');
                 game.stopTicks();
                 collision = true;
             }
@@ -247,7 +242,6 @@ const game = {
         for (let t = 1; t < data.tail.length; t++) {
             const tailPart = data.tail[t];
             if (x === tailPart.x && y === tailPart.y) {
-                console.log('HIT TAIL');
                 game.stopTicks();
                 collision = true;
             }
@@ -256,7 +250,6 @@ const game = {
         // collision with fruit
         data.fruit.map((fruit) => {
             if (x === fruit.x && y === fruit.y) {
-                console.log('FRUIT');
                 game.removeFruit(fruit.id, true);
                 game.extendTail();
             }
@@ -305,12 +298,12 @@ const game = {
         nodes.highScoresContainer.classList.add('inactive');
     },
     calcUserScore: () => {
+        const exisitingScore = data.scores.find(x => x.name === data.user.name);
+        
         data.user.score = data.user.time + (data.user.fruit * 5);
 
-        const exisitingScore = data.scores.find(obj => obj.name === data.user.name);
-
-        if (!exisitingScore) data.scores.push(data.user);
-        else if (exisitingScore && data.user.score > exisitingScore.score) Object.assign(existingScore, data.user);
+        if (!exisitingScore) data.scores.push(Object.assign({}, data.user));
+        else if (exisitingScore && data.user.score > exisitingScore.score) Object.assign(exisitingScore, data.user);
 
         data.scores.sort((a, b) => b.score - a.score);
     },
