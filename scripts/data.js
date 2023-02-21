@@ -83,10 +83,10 @@ const data = {
             score: 16
         },
         {
-            name: 'Sree Martyn',
-            fruit: 0,
-            time: 4,
-            score: 4
+            name: 'Salazar Slytherin',
+            fruit: 88,
+            time: 222,
+            score: 662
         },
     ],
     renderScores: () => {

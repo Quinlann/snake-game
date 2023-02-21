@@ -5,7 +5,7 @@ const game = {
     initialize: () => {
         game.setSnakeSize();
         game.addControls();
-        game.setupStartBtn();
+        game.setupSplashScreenBtns();
         game.showSplash();
     },
     showSplash: () => {
@@ -14,10 +14,17 @@ const game = {
     hideSplash: () => {
         nodes.splashContainer.classList.add('inactive');
     },
-    setupStartBtn: () => {
+    setupSplashScreenBtns: () => {
         nodes.splashStartBtn.addEventListener('click', () => {
             game.resetGame();
             game.startGame();
+        });
+
+        nodes.splashHighScoreBtn.addEventListener('click', () => {
+            game.hideSplash();
+            game.calcUserScore();
+            data.renderScores();
+            game.showHighScores();
         });
     },
     setSnakeSize: () => {

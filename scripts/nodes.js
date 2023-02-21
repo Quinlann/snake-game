@@ -10,6 +10,7 @@ const nodes = {
         nodes.fruitStatus = document.getElementById('fruit-status');
         nodes.splashContainer = document.getElementById('splashscreen-container');
         nodes.splashStartBtn = document.getElementById('splash-start-game-btn');
+        nodes.splashHighScoreBtn = document.getElementById('splash-highscore-btn');
     }
 }
 
