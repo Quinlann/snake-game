@@ -11,6 +11,8 @@ const nodes = {
         nodes.splashContainer = document.getElementById('splashscreen-container');
         nodes.splashStartBtn = document.getElementById('splash-start-game-btn');
         nodes.splashHighScoreBtn = document.getElementById('splash-highscore-btn');
+        nodes.username = document.getElementById('username');
+        nodes.usernameInput = document.getElementById('username-input');
     }
 }
 

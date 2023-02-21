@@ -103,9 +103,10 @@ const data = {
             nodes.highScoresList.appendChild(listItem);            
         });
     },
-    controlsStatus: 'normal',
+    controlsStatus: 'inactive',
     setupScoreBtns: () => {
         nodes.hightScoresTryAgain.addEventListener('click', () => {
+            if(!data.user.name) return
             game.resetGame();
             game.startGame();
         });

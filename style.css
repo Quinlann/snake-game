@@ -26,11 +26,15 @@ img {
                                     supported by Chrome, Edge, Opera and Firefox */
 }
 
-button {
+button, input {
     font-family: 'Gloock', serif;
     font-family: 'Inter', sans-serif;
     font-family: 'Press Start 2P', cursive;
     background-color: transparent;
+    pointer-events: auto;
+}
+
+button {
     border: none;
 }
 
@@ -114,10 +118,6 @@ button:hover {
     margin-top: 30px;
 }
 
-#highscores-footer button {
-    pointer-events: auto;
-}
-
 .fruit {
     position: absolute;
     aspect-ratio: 1;
@@ -161,10 +161,6 @@ button:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-#splashscreen button {
-    pointer-events: auto;
 }
 
 #username-container {

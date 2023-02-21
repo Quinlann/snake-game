@@ -6,6 +6,7 @@ const game = {
         game.setSnakeSize();
         game.addControls();
         game.setupSplashScreenBtns();
+        game.setupUsernameInput();
         game.showSplash();
     },
     showSplash: () => {
@@ -16,6 +17,7 @@ const game = {
     },
     setupSplashScreenBtns: () => {
         nodes.splashStartBtn.addEventListener('click', () => {
+            if(!data.user.name) return
             game.resetGame();
             game.startGame();
         });
@@ -401,6 +403,15 @@ const game = {
     resetFruitCounter: () => {
         data.user.fruit = 0;
         game.updateFruitConter();
+    },
+    setupUsernameInput: () => {
+        nodes.usernameInput.addEventListener('input', (e) => {
+            data.user.name = e.target.value;
+            game.updateUsernameHud();
+        });
+    },
+    updateUsernameHud: () => {
+        nodes.username.innerText = data.user.name;
     }
 }
 
