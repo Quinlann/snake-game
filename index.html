@@ -26,55 +26,64 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Gloock&family=Inter:wght@400;600;700&family=Press+Start+2P&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
-  <script type="module" src="./app.js"></script>
+  <!-- <script type="module" src="./app.js"></script> -->
 
 </head>
 
 <body>
 
-  <div id="canvas">
-    <div id="snake-head" class="up"></div>
-  </div>
+  <div id="app">
 
-  <div id="game-stats-container">
-    <div id="fruit-status" class="game-stat"></div>
-    <div id="time-status" class="game-stat"></div>
-  </div>
+    <!-- 
+    <div id="game-stats-container">
+      <div id="fruit-status" class="game-stat"></div>
+      <div id="time-status" class="game-stat"></div>
+    </div>
 
-  <div id="splashscreen-container">
-    <div id="splashscreen">
-      <h1 id="splash-header">PEARL PLATE PYTHON</h1>
-      <div id="splash-controls-container">
-        <input type="text" id="username-input" value="Player 1" placeholder="Enter your username">
-        <button id="splash-start-game-btn">START</button>
-        <button id="splash-highscore-btn">HIGH SCORE</button>
+    <div id="splashscreen-container">
+      <div id="splashscreen">
+        <h1 id="splash-header">PEARL PLATE PYTHON</h1>
+        <div id="splash-controls-container">
+          <input type="text" id="username-input" value="Player 1" placeholder="Enter your username">
+          <button id="splash-start-game-btn">START</button>
+          <button id="splash-highscore-btn">HIGH SCORE</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="highscores-container" class="inactive">
-    <div id="highscores">
-      <h1 id="highscores-header">High Scores</h1>
-      <div id="highscores-list-container">
-        <ol id="highscores-list">
-          <li><span>David Hayter</span> <span>Score: 20</span> <span>Time: 20</span></li>
-          <li><span>John Doe</span> <span>Score: 14</span> <span>Time: 12</span></li>
-          <li><span>Sree Martyn</span> <span>Score: 10</span> <span>Time: 8</span></li>
-        </ol>
+    <div id="highscores-container" class="inactive">
+      <div id="highscores">
+        <h1 id="highscores-header">High Scores</h1>
+        <div id="highscores-list-container">
+          <ol id="highscores-list">
+            <li><span>David Hayter</span> <span>Score: 20</span> <span>Time: 20</span></li>
+            <li><span>John Doe</span> <span>Score: 14</span> <span>Time: 12</span></li>
+            <li><span>Sree Martyn</span> <span>Score: 10</span> <span>Time: 8</span></li>
+          </ol>
+        </div>
+        <footer id="highscores-footer">
+          <button id="highscores-try-again-btn">Try Again</button>
+          <button id="highscores-main-menu-btn">Main Menu</button>
+        </footer>
       </div>
-      <footer id="highscores-footer">
-        <button id="highscores-try-again-btn">Try Again</button>
-        <button id="highscores-main-menu-btn">Main Menu</button>
-      </footer>
     </div>
+
+    <div id="username-container">
+      <div id="username">Player 1</div>
+    </div>
+     -->
+
   </div>
 
-  <div id="username-container">
-    <div id="username">Player 1</div>
-  </div>
+  <script src="https://unpkg.com/vue@next"></script>
+
+  <!-- import app -->
+  <script type="module" src="./main.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
