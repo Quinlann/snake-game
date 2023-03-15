@@ -8,6 +8,7 @@ const app = Vue.createApp({
             grid: [0,0],
             canvasWidth: 0,
             canvasHeight: 0,
+            snakeSize: 30,
         }
     },
     methods: {
@@ -19,7 +20,7 @@ const app = Vue.createApp({
         }
     },
     mounted() {
-        // this.grid = [Math.floor(data.canvasWidth / data.snakeSize), Math.floor(data.canvasHeight / data.snakeSize)]
+        this.grid = [Math.floor(this.canvasWidth / this.snakeSize), Math.floor(this.canvasHeight / this.snakeSize)]
     },
     template: /* html */
     `
