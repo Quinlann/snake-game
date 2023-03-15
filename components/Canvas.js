@@ -1,12 +1,19 @@
 import SnakeHead from './SnakeHead.js'
 
 export default {
-    template:
-    /* html */
+    components: [SnakeHead],
+    data() {
+        return {
+            canvasWidth: 0
+        }
+    },
+    mounted() {
+        this.canvasWidth = document.getElementById('canvas').getBoundingClientRect().width;
+    },
+    template: /* html */
     `
-    <div id="canvas">
-        <SnakeHead/>
-    </div>
-    `,
-    components: [SnakeHead]
+        <div id="canvas">
+            <SnakeHead/>
+        </div>
+    `
 }

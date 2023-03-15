@@ -3,11 +3,14 @@ import SnakeHead from './components/SnakeHead.js';
 import SplashScreen from './components/SplashScreen.js';
 
 const app = Vue.createApp({
-    template: 
-    /* html */
+    data() {
+        return {}
+    },
+    methods: {},
+    template: /* html */
     `
-    <Canvas/>
-    <SplashScreen/>
+        <Canvas/>
+        <SplashScreen/>
     `
 });
 
