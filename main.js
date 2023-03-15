@@ -15,6 +15,26 @@ const app = Vue.createApp({
                 y: 0,
                 direction: 'up'
             },
+            scores: [
+                {
+                    name: 'David Hayter',
+                    fruit: 4,
+                    time: 10,
+                    score: 30
+                },
+                {
+                    name: 'John Doe',
+                    fruit: 2,
+                    time: 6,
+                    score: 16
+                },
+                {
+                    name: 'Salazar Slytherin',
+                    fruit: 11,
+                    time: 67,
+                    score: 122
+                },
+            ],
         }
     },
     methods: {
@@ -30,6 +50,19 @@ const app = Vue.createApp({
             this.snake.x = Math.ceil(this.grid[0] / 2);
             this.snake.y = Math.ceil(this.grid[1] / 2);
         },
+        loadUserCookie() {
+            const cookieValues = document.cookie.split('; ').filter(row => row.startsWith('user_'));
+        
+            if (cookieValues) {
+                cookieValues.map((cookieValue) => {
+                    const userObj = JSON.parse(cookieValue.split('=')[1]);
+                    this.scores.push(Object.assign({},userObj));
+                });
+            } else {
+                return null;
+            }
+            console.log(this.scores);
+        },
         handleCanvasWidth(canvasWidth) {
             this.canvasWidth = canvasWidth;
         },
@@ -40,6 +73,7 @@ const app = Vue.createApp({
     mounted() {
         this.createGrid();
         this.setStartPos();
+        this.loadUserCookie();
     },
     template: /* html */
     `
