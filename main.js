@@ -9,6 +9,7 @@ const app = Vue.createApp({
             canvasWidth: 0,
             canvasHeight: 0,
             snakeSize: 30,
+            cellSize: 0,
         }
     },
     methods: {
@@ -17,10 +18,19 @@ const app = Vue.createApp({
         },
         handleCanvasHeight(canvasHeight) {
             this.canvasHeight = canvasHeight;
+        },
+        createGrid() {
+            this.grid = [Math.floor(this.canvasWidth / this.snakeSize), Math.floor(this.canvasHeight / this.snakeSize)];    
+
+            if(data.grid[0] % 2==0) data.grid[0]--;
+            if(data.grid[1] % 2==0) data.grid[1]--;
+
+            this.cellSize = this.canvasWidth / this.grid[0];
         }
     },
     mounted() {
-        this.grid = [Math.floor(this.canvasWidth / this.snakeSize), Math.floor(this.canvasHeight / this.snakeSize)]
+        this.createGrid();
+        // this.setStartPos();
     },
     template: /* html */
     `
