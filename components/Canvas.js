@@ -1,24 +1,24 @@
-import SnakeHead from './SnakeHead.js'
-
 export default {
-    components: [SnakeHead],
+    props: ['cellSize'],
+    components: ['SnakeHead'],
     data() {
-        return {
-            canvasNode: null
-        }
+        return {}
     },
+    methods: {},
     mounted() {
-        this.canvasNode = document.getElementById('canvas');
-
         // $emit
-        this.$emit('emit-canvas-width', this.canvasNode.getBoundingClientRect().width);
-        this.$emit('emit-canvas-height', this.canvasNode.getBoundingClientRect().height);
+        this.$emit('emit-canvas-width', this.$refs.canvas.getBoundingClientRect().width);
+        this.$emit('emit-canvas-height', this.$refs.canvas.getBoundingClientRect().height);
     },
     emits: ['emit-canvas-width','emit-canvas-height'],
     template: /* html */
     `
-        <div id="canvas">
-            <SnakeHead/>
+        <div id="canvas" ref="canvas" 
+            :style="{backgroundSize: this.cellSize + 'px'}"
+        >
+            <SnakeHead 
+                :cellSize="cellSize"
+            />
         </div>
     `
 }

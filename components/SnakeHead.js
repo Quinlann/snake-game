@@ -1,7 +1,12 @@
 export default {
-    template:
-    /* html */
+    props: ['cellSize'],
+    data() {
+        return {}
+    },
+    methods: {},
+    mounted() {},
+    template:/* html */
     `
-    <div id="snake-head" class="up"></div>
+        <div id="snake-head" class="up" :style="{width: this.cellSize + 'px'}"></div>
     `
 }

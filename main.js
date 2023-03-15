@@ -29,7 +29,6 @@ const app = Vue.createApp({
         setStartPos() {
             this.snake.x = Math.ceil(this.grid[0] / 2);
             this.snake.y = Math.ceil(this.grid[1] / 2);
-            console.log(this.snake);
         },
         handleCanvasWidth(canvasWidth) {
             this.canvasWidth = canvasWidth;
@@ -47,6 +46,7 @@ const app = Vue.createApp({
         <Canvas 
             @emit-canvas-width="handleCanvasWidth"
             @emit-canvas-height="handleCanvasHeight"
+            :cellSize="cellSize"
         />
         <SplashScreen/>
     `
