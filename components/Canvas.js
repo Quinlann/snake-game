@@ -4,12 +4,17 @@ export default {
     components: [SnakeHead],
     data() {
         return {
-            canvasWidth: 0
+            canvasNode: null
         }
     },
     mounted() {
-        this.canvasWidth = document.getElementById('canvas').getBoundingClientRect().width;
+        this.canvasNode = document.getElementById('canvas');
+
+        // $emit
+        this.$emit('emit-canvas-width', this.canvasNode.getBoundingClientRect().width);
+        this.$emit('emit-canvas-height', this.canvasNode.getBoundingClientRect().height);
     },
+    emits: ['emit-canvas-width','emit-canvas-height'],
     template: /* html */
     `
         <div id="canvas">

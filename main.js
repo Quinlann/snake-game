@@ -4,12 +4,29 @@ import SplashScreen from './components/SplashScreen.js';
 
 const app = Vue.createApp({
     data() {
-        return {}
+        return {
+            grid: [0,0],
+            canvasWidth: 0,
+            canvasHeight: 0,
+        }
     },
-    methods: {},
+    methods: {
+        handleCanvasWidth(canvasWidth) {
+            this.canvasWidth = canvasWidth;
+        },
+        handleCanvasHeight(canvasHeight) {
+            this.canvasHeight = canvasHeight;
+        }
+    },
+    mounted() {
+        // this.grid = [Math.floor(data.canvasWidth / data.snakeSize), Math.floor(data.canvasHeight / data.snakeSize)]
+    },
     template: /* html */
     `
-        <Canvas/>
+        <Canvas 
+            @emit-canvas-width="handleCanvasWidth"
+            @emit-canvas-height="handleCanvasHeight"
+        />
         <SplashScreen/>
     `
 });
