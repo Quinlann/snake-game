@@ -33,8 +33,14 @@ const app = Vue.createApp({
                     fruit: 11,
                     time: 67,
                     score: 122
-                },
+                }
             ],
+            user: {
+                name: 'Player 1',
+                time: 0,
+                score: 0,
+                fruit: 0
+            },
         }
     },
     methods: {
@@ -61,7 +67,9 @@ const app = Vue.createApp({
             } else {
                 return null;
             }
-            console.log(this.scores);
+        },
+        updateUserName(name) {
+            this.user.name = name;
         },
         handleCanvasWidth(canvasWidth) {
             this.canvasWidth = canvasWidth;
@@ -82,7 +90,9 @@ const app = Vue.createApp({
             @emit-canvas-height="handleCanvasHeight"
             :cellSize="cellSize"
         />
-        <SplashScreen/>
+        <SplashScreen 
+            :updateUserName="updateUserName"
+        />
     `
 });
 

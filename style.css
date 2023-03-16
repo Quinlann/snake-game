@@ -13,7 +13,7 @@ img {
 }
 
 * {
-    /* pointer-events: none; */
+    pointer-events: none;
     box-sizing: border-box;
 
     /* noselect */
