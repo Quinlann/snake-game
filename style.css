@@ -94,10 +94,6 @@ button:hover {
     justify-content: center;
 }
 
-#highscores-container.inactive {
-    display: none;
-}
-
 #highscores {
     padding: 0;
     background-color: white;
@@ -150,10 +146,6 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-#splashscreen-container.inactive {
-    display: none;
 }
 
 #splashscreen {

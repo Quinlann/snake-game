@@ -1,6 +1,7 @@
 import Canvas from './components/Canvas.js';
 import SnakeHead from './components/SnakeHead.js';
 import SplashScreen from './components/SplashScreen.js';
+import HighScores from './components/HighScores.js';
 
 const app = Vue.createApp({
     data() {
@@ -40,7 +41,7 @@ const app = Vue.createApp({
                 time: 0,
                 score: 0,
                 fruit: 0
-            },
+            }
         }
     },
     methods: {
@@ -68,6 +69,12 @@ const app = Vue.createApp({
                 return null;
             }
         },
+        showSplashScreen() {
+            this.$refs.SplashScreen.showSplashScreen();
+        },
+        showHighScores() {
+            this.$refs.HighScores.showHighScores();
+        },
         updateUserName(name) {
             this.user.name = name;
         },
@@ -90,8 +97,15 @@ const app = Vue.createApp({
             @emit-canvas-height="handleCanvasHeight"
             :cellSize="cellSize"
         />
-        <SplashScreen 
+        <SplashScreen
+            ref="SplashScreen"
             :updateUserName="updateUserName"
+            :showHighScores="showHighScores"
+        />
+        <HighScores
+            ref="HighScores"
+            :scores="scores"
+            :showSplashScreen="showSplashScreen"
         />
     `
 });
@@ -99,5 +113,6 @@ const app = Vue.createApp({
 app.component('Canvas', Canvas);
 app.component('SnakeHead', SnakeHead);
 app.component('SplashScreen', SplashScreen);
+app.component('HighScores', HighScores);
 
 app.mount('#app');
