@@ -35,7 +35,7 @@ export default {
                 :cellSize="cellSize"
                 :tail="tail"
             />
-            <div v-for="part in tail" class="tail" :key="part.id" :style="{left: part.x * this.cellSize + 'px', top: part.y * this.cellSize + 'px'}"></div>
+            <div v-for="part in tail" class="tail" :key="part.id" :style="{left: part.x * this.cellSize + 'px', top: part.y * this.cellSize + 'px', width: this.cellSize + 'px', height: this.cellSize + 'px'}"></div>
         </div>
     `
 }

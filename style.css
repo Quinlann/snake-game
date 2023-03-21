@@ -131,6 +131,7 @@ button:hover {
     position: absolute;
     aspect-ratio: 1;
     background-image: url(./assets/tail_texture.png);
+    background-size: 100%;
     transform: translate(-50%, -50%);
 }
 
