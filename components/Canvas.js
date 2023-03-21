@@ -5,11 +5,12 @@ export default {
         return {}
     },
     methods: {
-        setSnakeStartPos() {
-            this.$refs.snakeHead.setStartPos();
+        placeSnakeStartPos() {
+            const startPos = [Math.ceil(this.grid[0] / 2), Math.ceil(this.grid[1] / 2)];
+            this.placeSnakeAtPos(startPos);
         },
-        placeSnakeAtPos() {
-            this.$refs.snakeHead.placeAtPosition();
+        placeSnakeAtPos(pos) {
+            this.$refs.SnakeHead.placeAtNewPosition(pos);
         }
     },
     mounted() {
@@ -24,7 +25,7 @@ export default {
             :style="{backgroundSize: this.cellSize + 'px'}"
         >
             <SnakeHead 
-                ref="snakeHead"
+                ref="SnakeHead"
                 :cellSize="cellSize"
                 :grid="grid"
             />

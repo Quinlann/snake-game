@@ -1,5 +1,5 @@
 export default {
-    props: ['cellSize','grid'],
+    props: ['cellSize'],
     data() {
         return {
             controlsStatus: 'normal',
@@ -31,14 +31,16 @@ export default {
         pressRight() {
             console.table('RIGHT');
         },
-        setStartPos() {
-            this.pos[0] = Math.ceil(this.grid[0] / 2);
-            this.pos[1] = Math.ceil(this.grid[1] / 2);
+        updatePosition(newPos) {
+            this.pos = newPos;
+        },
+        placeAtNewPosition(newPos) {
+            this.updatePosition(newPos);
+            this.placeAtPosition();
         },
         placeAtPosition() {
-            // console.log(this.$refs['snake-head']);
-            // node.style.left = `${pos[0]}px`;
-            // node.style.top = `${pos[1]}px`;
+            this.$refs['snake-head'].style.left = `${this.pos[0] * this.cellSize}px`;
+            this.$refs['snake-head'].style.top = `${this.pos[1] * this.cellSize}px`;
         }
     },
     beforeMount() {

@@ -73,11 +73,10 @@ const app = Vue.createApp({
             this.$refs.SplashScreen.hideSplashScreen();
             this.$refs.HighScores.hideHighScores();
 
-            this.$refs.canvas.setSnakeStartPos();
+            this.$refs.canvas.placeSnakeStartPos();
 
             // game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
             // [data.snake.x * data.cellSize, data.snake.y * data.cellSize]
-            this.$refs.canvas.placeSnakeAtPos();
 
 
             // game.addStartTail();
@@ -105,7 +104,6 @@ const app = Vue.createApp({
     },
     mounted() {
         this.createGrid();
-        this.$refs.canvas.setSnakeStartPos();
         this.loadUserCookie();
     },
     template: /* html */
