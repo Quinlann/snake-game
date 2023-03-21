@@ -113,6 +113,7 @@ const app = Vue.createApp({
         },
         tick() {
             console.log('tick');
+            // return
             const snakePos = this.$refs.canvas.getSnakePos();
 
             switch (this.$refs.canvas.getSnakeDirection()) {
@@ -122,7 +123,7 @@ const app = Vue.createApp({
                         return
                     }
                     this.$refs.canvas.updateSnakePosAndMove([snakePos[0], snakePos[1] - 1]);
-                    // game.updateTail();
+                    this.$refs.canvas.updateTail();
                     break;
     
                 case 'left':
@@ -131,7 +132,7 @@ const app = Vue.createApp({
                         return
                     }
                     this.$refs.canvas.updateSnakePosAndMove([snakePos[0] - 1, snakePos[1]]);
-                    // game.updateTail();
+                    this.$refs.canvas.updateTail();
                     break;
 
                 case 'down':
@@ -140,7 +141,7 @@ const app = Vue.createApp({
                         return
                     }
                     this.$refs.canvas.updateSnakePosAndMove([snakePos[0], snakePos[1] + 1]);
-                    // game.updateTail();
+                    this.$refs.canvas.updateTail();
                     break;
 
                 case 'right':
@@ -149,7 +150,7 @@ const app = Vue.createApp({
                         return
                     }
                     this.$refs.canvas.updateSnakePosAndMove([snakePos[0] + 1, snakePos[1]]);
-                    // game.updateTail();
+                    this.$refs.canvas.updateTail();
                     break;
     
                 default:

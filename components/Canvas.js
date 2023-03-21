@@ -18,7 +18,24 @@ export default {
             this.$refs.SnakeHead.placeAtNewPosition(pos);
         },
         addStartTail() {
-            this.$refs.SnakeHead.addStartTail();
+            for (let i = 2; i > -1; i--) {
+                this.addTail(this.$refs.SnakeHead.pos[0], this.$refs.SnakeHead.pos[1] + (i));
+            }
+        },
+        addTail(x, y) {
+            const tailId = this.tail.length === 0 ? 0 : this.tail[this.tail.length - 1].id + 1;
+            this.tail.push({
+                id: tailId,
+                x: x,
+                y: y
+            });
+        },
+        updateTail() {
+            this.addTail(this.$refs.SnakeHead.pos[0], this.$refs.SnakeHead.pos[1]);
+            this.removeTailEnd();
+        },
+        removeTailEnd() {
+            console.log(this.tail.shift());
         },
         addObstacles() {
             // add more obstacles depending on screen width and difficulty level
@@ -101,7 +118,7 @@ export default {
                 :cellSize="cellSize"
                 :tail="tail"
             />
-            <div v-for="part in tail" class="tail" :key="part.id" :style="{left: part.x * this.cellSize + 'px', top: part.y * this.cellSize + 'px', width: this.cellSize + 'px', height: this.cellSize + 'px'}"></div>
+            <div v-for="part in tail" class="tail" :key="part.id" :data-id="part.id" :style="{left: part.x * this.cellSize + 'px', top: part.y * this.cellSize + 'px', width: this.cellSize + 'px', height: this.cellSize + 'px'}"></div>
             <div v-for="obs in obstacles" class="obstacle" :class="obs.type" :style="{left: obs.x * this.cellSize + 'px', top: obs.y * this.cellSize + 'px', width: this.cellSize + 'px',}"></div>
         </div>
     `
