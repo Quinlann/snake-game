@@ -36,7 +36,8 @@ const app = Vue.createApp({
                 time: 0,
                 score: 0,
                 fruit: 0
-            }
+            },
+            difficulty: 75,
         }
     },
     methods: {
@@ -74,11 +75,11 @@ const app = Vue.createApp({
             this.$refs.HighScores.hideHighScores();
             this.$refs.canvas.placeSnakeStartPos();
             this.$refs.canvas.addStartTail();
-
-            // game.addObstacles();
+            this.$refs.canvas.addObstacles();
+            
+            // game.renderObstacles();
             
 
-            // game.renderObstacles();
             // game.startTicks();
             // game.changeDirection('up');
             // data.controlsStatus = 'normal';
@@ -111,6 +112,7 @@ const app = Vue.createApp({
             @emit-canvas-height="handleCanvasHeight"
             :cellSize="cellSize"
             :grid="grid"
+            :difficulty="difficulty"
         />
         <SplashScreen
             ref="SplashScreen"

@@ -1,9 +1,12 @@
 export default {
-    props: ['cellSize','grid'],
+    props: ['cellSize','grid','difficulty'],
     components: ['SnakeHead'],
     data() {
         return {
-            tail: []
+            tail: [],
+            obstacles: [],
+            cells: [],
+            obstacleTypes: ['wall'],
         }
     },
     methods: {
@@ -16,7 +19,52 @@ export default {
         },
         addStartTail() {
             this.$refs.SnakeHead.addStartTail();
-        }
+        },
+        addObstacles() {
+            // add more obstacles depending on screen width and difficulty level
+            let numberOfObstacles = Math.ceil((Math.floor(this.grid[0] / 20) * this.difficulty) / 2) + 1;
+            for (let i = 0; i < numberOfObstacles; i++) this.addObstacle();
+        },
+        addObstacle() {
+            this.calcAvailableCells();
+
+            let chosenCell = this.cells[Math.floor(Math.random() * this.cells.length)];
+            this.obstacles.push({
+                type: this.obstacleTypes[0],
+                x: chosenCell[0],
+                y: chosenCell[1]
+            });
+        },
+        calcAvailableCells() {
+            this.cells.length = 0;
+            for (let r = 2; r <= this.grid[1]-2; r++) {
+                for (let c = 2; c <= this.grid[0]-2; c++) {
+                    let cellIsOccupied = false;
+                    
+                    // check if there is already an obstacle at that coor
+                    this.obstacles.map((obs) => {
+                        if(obs.x === c && obs.y === r) cellIsOccupied = true;
+                    });
+    
+                    // check if there is already a fruit at that coor
+                    // data.fruit.map((fruit) => {
+                    //     if(fruit.x === c && fruit.y === r) cellIsOccupied = true;
+                    // });
+    
+                    // check if there is a tail at that coor
+                    this.tail.map((tail) => {
+                        if(tail.x === c && tail.y === r) cellIsOccupied = true;
+                    });
+    
+                    // don't place anything on the same row or column as snake head
+                    if(this.$refs.SnakeHead.pos[0] === c || this.$refs.SnakeHead.pos[1] === r) cellIsOccupied = true;
+                    
+                    if(cellIsOccupied) continue
+    
+                    this.cells.push([c,r]);
+                }
+            }
+        },
     },
     mounted() {
         // $emit
