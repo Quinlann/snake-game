@@ -81,6 +81,7 @@ button:hover {
     aspect-ratio: 1;
     transform: translate(-50%, -50%);
     background-image: url(./assets/wall_texture.png);
+    background-size: 100%;
 }
 
 #highscores-container {

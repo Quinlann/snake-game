@@ -23,7 +23,10 @@ export default {
         addObstacles() {
             // add more obstacles depending on screen width and difficulty level
             let numberOfObstacles = Math.ceil((Math.floor(this.grid[0] / 20) * this.difficulty) / 2) + 1;
-            for (let i = 0; i < numberOfObstacles; i++) this.addObstacle();
+            for (let i = 0; i < numberOfObstacles; i++) {
+                this.addObstacle();
+                console.log(`${i}/${numberOfObstacles}`);
+            }
         },
         addObstacle() {
             this.calcAvailableCells();
@@ -84,6 +87,7 @@ export default {
                 :tail="tail"
             />
             <div v-for="part in tail" class="tail" :key="part.id" :style="{left: part.x * this.cellSize + 'px', top: part.y * this.cellSize + 'px', width: this.cellSize + 'px', height: this.cellSize + 'px'}"></div>
+            <div v-for="obs in obstacles" class="obstacle" :class="obs.type" :style="{left: obs.x * this.cellSize + 'px', top: obs.y * this.cellSize + 'px', width: this.cellSize + 'px',}"></div>
         </div>
     `
 }
