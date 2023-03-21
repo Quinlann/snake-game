@@ -78,6 +78,30 @@ const app = Vue.createApp({
         updateUserName(name) {
             this.user.name = name;
         },
+        startGame() {
+            this.$refs.SplashScreen.hideSplashScreen();
+            this.$refs.HighScores.hideHighScores();
+
+            // data.setStartPos();
+            
+
+            // game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+            // game.addStartTail();
+            // game.addObstacles();
+            // game.renderObstacles();
+            // game.startTicks();
+            // game.changeDirection('up');
+            // data.controlsStatus = 'normal';
+            // game.startClock();
+            console.log('startGame');
+        },
+        resetGame() {
+            // game.removeObstacles();
+            // game.removeTail();
+            // game.resetFruitCounter();
+            // data.resetTickSpeed();
+            console.log('reset');
+        },
         handleCanvasWidth(canvasWidth) {
             this.canvasWidth = canvasWidth;
         },
@@ -101,11 +125,15 @@ const app = Vue.createApp({
             ref="SplashScreen"
             :updateUserName="updateUserName"
             :showHighScores="showHighScores"
+            :startGame="startGame"
+            :resetGame="resetGame"
         />
         <HighScores
             ref="HighScores"
             :scores="scores"
             :showSplashScreen="showSplashScreen"
+            :startGame="startGame"
+            :resetGame="resetGame"
         />
     `
 });

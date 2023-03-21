@@ -1,14 +1,18 @@
 export default {
-    props: ['scores','showSplashScreen'],
+    props: ['scores','showSplashScreen','startGame','resetGame'],
     data() {
         return {
-            showingHighScore: true
+            showingHighScore: false
         }
     },
     methods: {
         mainMenuBtn() {
             this.hideHighScores();
             this.showSplashScreen();
+        },
+        tryAgainBtn() {
+            this.resetGame();
+            this.startGame();
         },
         hideHighScores() {
             this.showingHighScore = false;
@@ -30,7 +34,7 @@ export default {
             </ol>
         </div>
         <footer id="highscores-footer">
-            <button id="highscores-try-again-btn">Try Again</button>
+            <button id="highscores-try-again-btn" @click="tryAgainBtn">Try Again</button>
             <button id="highscores-main-menu-btn" @click="mainMenuBtn">Main Menu</button>
         </footer>
         </div>

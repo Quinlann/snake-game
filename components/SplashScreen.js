@@ -1,13 +1,14 @@
 export default {
-    props: ['updateUserName','showHighScores'],
+    props: ['updateUserName','showHighScores', 'startGame','resetGame'],
     data() {
         return {
-            splashShowing: false
+            splashShowing: true
         }
     },
     methods: {
         startGameBtn() {
-            console.log('START GAME');
+            this.resetGame();
+            this.startGame();
         },
         highScoreBtn() {
             this.hideSplashScreen();
