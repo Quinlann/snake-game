@@ -2,7 +2,7 @@ export default {
     props: ['cellSize','tail'],
     data() {
         return {
-            controlsStatus: 'normal',
+            controlsStatus: 'inactive',
             pos: [0,0],
             direction: 'up'
         }
@@ -70,6 +70,9 @@ export default {
             if (direction === 'right' && this.direction === 'left') return false
             return true
         },
+        setControlStatus(status) {
+            this.controlsStatus = status;
+        }
     },
     beforeMount() {
         document.addEventListener('keydown', this.keyHandler);

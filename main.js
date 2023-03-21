@@ -77,10 +77,9 @@ const app = Vue.createApp({
             this.$refs.canvas.addStartTail();
             this.$refs.canvas.addObstacles();
             this.$refs.canvas.changeSnakeDirection('up');
+            this.$refs.canvas.setControlStatus('normal');
+            
 
-            // game.changeDirection('up');
-
-            // data.controlsStatus = 'normal';
             // game.startTicks();
             // game.startClock();
             console.log('startGame');
