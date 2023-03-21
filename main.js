@@ -72,14 +72,12 @@ const app = Vue.createApp({
         startGame() {
             this.$refs.SplashScreen.hideSplashScreen();
             this.$refs.HighScores.hideHighScores();
-
             this.$refs.canvas.placeSnakeStartPos();
-
-            // game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
-            // [data.snake.x * data.cellSize, data.snake.y * data.cellSize]
-
+            this.$refs.canvas.addStartTail();
 
             // game.addStartTail();
+
+
             // game.addObstacles();
             // game.renderObstacles();
             // game.startTicks();

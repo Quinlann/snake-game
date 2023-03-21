@@ -2,7 +2,9 @@ export default {
     props: ['cellSize','grid'],
     components: ['SnakeHead'],
     data() {
-        return {}
+        return {
+            tail: []
+        }
     },
     methods: {
         placeSnakeStartPos() {
@@ -11,6 +13,9 @@ export default {
         },
         placeSnakeAtPos(pos) {
             this.$refs.SnakeHead.placeAtNewPosition(pos);
+        },
+        addStartTail() {
+            this.$refs.SnakeHead.addStartTail();
         }
     },
     mounted() {
@@ -21,14 +26,16 @@ export default {
     emits: ['emit-canvas-width','emit-canvas-height'],
     template: /* html */
     `
-        <div id="canvas" ref="canvas" 
+        <div id="canvas" 
+            ref="canvas" 
             :style="{backgroundSize: this.cellSize + 'px'}"
         >
             <SnakeHead 
                 ref="SnakeHead"
                 :cellSize="cellSize"
-                :grid="grid"
+                :tail="tail"
             />
+            <div v-for="part in tail" class="tail" :key="part.id" :style="{left: part.x * this.cellSize + 'px', top: part.y * this.cellSize + 'px'}"></div>
         </div>
     `
 }

@@ -1,5 +1,5 @@
 export default {
-    props: ['cellSize'],
+    props: ['cellSize','tail'],
     data() {
         return {
             controlsStatus: 'normal',
@@ -41,7 +41,17 @@ export default {
         placeAtPosition() {
             this.$refs['snake-head'].style.left = `${this.pos[0] * this.cellSize}px`;
             this.$refs['snake-head'].style.top = `${this.pos[1] * this.cellSize}px`;
-        }
+        },
+        addStartTail() {
+            for (let i = 0; i < 3; i++) {
+                const [tailId, x, y] = [this.tail.length, this.pos[0], this.pos[1] + (i + 1)];
+                this.tail.push({
+                    id: tailId,
+                    x: x,
+                    y: y
+                });
+            }
+        },
     },
     beforeMount() {
         document.addEventListener('keydown', this.keyHandler);
