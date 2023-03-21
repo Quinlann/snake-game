@@ -69,10 +69,13 @@ export default {
             }
         },
         changeSnakeDirection(direction) {
-            this.$refs.snakeHead.changeDirection(direction);
+            this.$refs.SnakeHead.changeDirection(direction);
         },
         setControlStatus(status) {
-            this.$refs.snakeHead.setControlStatus(status);
+            this.$refs.SnakeHead.setControlStatus(status);
+        },
+        getSnakeDirection() {
+            return this.$refs.SnakeHead.direction;
         }
     },
     mounted() {

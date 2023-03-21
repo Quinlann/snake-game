@@ -38,9 +38,17 @@ const app = Vue.createApp({
                 fruit: 0
             },
             difficulty: 75,
+            gameTick: null,
+            speed: 200,
         }
     },
     methods: {
+        handleCanvasWidth(canvasWidth) {
+            this.canvasWidth = canvasWidth;
+        },
+        handleCanvasHeight(canvasHeight) {
+            this.canvasHeight = canvasHeight;
+        },
         createGrid() {
             this.grid = [Math.floor(this.canvasWidth / this.snakeSize), Math.floor(this.canvasHeight / this.snakeSize)];    
 
@@ -78,9 +86,10 @@ const app = Vue.createApp({
             this.$refs.canvas.addObstacles();
             this.$refs.canvas.changeSnakeDirection('up');
             this.$refs.canvas.setControlStatus('normal');
-            
 
-            // game.startTicks();
+            this.startTicks();
+
+
             // game.startClock();
             console.log('startGame');
         },
@@ -91,11 +100,60 @@ const app = Vue.createApp({
             // data.resetTickSpeed();
             console.log('reset');
         },
-        handleCanvasWidth(canvasWidth) {
-            this.canvasWidth = canvasWidth;
+        startTicks() {
+            this.gameTick = setInterval(() => {
+                this.tick();
+            }, this.speed);
         },
-        handleCanvasHeight(canvasHeight) {
-            this.canvasHeight = canvasHeight;
+        tick() {
+            console.log('tick');
+            console.log(this.$refs.canvas.getSnakeDirection());
+
+            return
+            switch (this.$refs.canvas.getSnakeDirection()) {
+                case 'up':
+                    if (game.checkCollision(data.snake.x, data.snake.y - 1)) {
+                        game.stopGame();
+                        return
+                    }
+                    data.snake.y--;
+                    game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+                    game.updateTail();
+                    break;
+    
+                case 'left':
+                    if (game.checkCollision(data.snake.x - 1, data.snake.y)) {
+                        game.stopGame();
+                        return
+                    }
+                    data.snake.x--;
+                    game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+                    game.updateTail();
+                    break;
+    
+                case 'down':
+                    if (game.checkCollision(data.snake.x, data.snake.y + 1)) {
+                        game.stopGame();
+                        return
+                    }
+                    data.snake.y++
+                    game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+                    game.updateTail();
+                    break;
+    
+                case 'right':
+                    if (game.checkCollision(data.snake.x + 1, data.snake.y)) {
+                        game.stopGame();
+                        return
+                    }
+                    data.snake.x++
+                    game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+                    game.updateTail();
+                    break;
+    
+                default:
+                    break;
+            }
         },
     },
     mounted() {
