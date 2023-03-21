@@ -93,6 +93,9 @@ const app = Vue.createApp({
             // game.startClock();
             console.log('startGame');
         },
+        stopGame() {
+            console.log('stop game');
+        },
         resetGame() {
             // game.removeObstacles();
             // game.removeTail();
@@ -105,55 +108,98 @@ const app = Vue.createApp({
                 this.tick();
             }, this.speed);
         },
+        stopTicks() {
+            console.log('stopTicks');
+        },
         tick() {
             console.log('tick');
-            console.log(this.$refs.canvas.getSnakeDirection());
+            const snakePos = this.$refs.canvas.getSnakePos();
 
-            return
             switch (this.$refs.canvas.getSnakeDirection()) {
                 case 'up':
-                    if (game.checkCollision(data.snake.x, data.snake.y - 1)) {
-                        game.stopGame();
+                    if (this.checkCollision(snakePos[0], snakePos[1] - 1)) {
+                        this.stopGame();
                         return
                     }
-                    data.snake.y--;
-                    game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
-                    game.updateTail();
+                    this.$refs.canvas.updateSnakePosAndMove([snakePos[0], snakePos[1] - 1]);
+                    // game.updateTail();
                     break;
     
                 case 'left':
-                    if (game.checkCollision(data.snake.x - 1, data.snake.y)) {
-                        game.stopGame();
+                    if (this.checkCollision(snakePos[0] - 1, snakePos[1])) {
+                        this.stopGame();
                         return
                     }
-                    data.snake.x--;
-                    game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
-                    game.updateTail();
+                    this.$refs.canvas.updateSnakePosAndMove([snakePos[0] - 1, snakePos[1]]);
+                    // game.updateTail();
                     break;
-    
+
                 case 'down':
-                    if (game.checkCollision(data.snake.x, data.snake.y + 1)) {
-                        game.stopGame();
+                    if (this.checkCollision(snakePos[0], snakePos[1] + 1)) {
+                        this.stopGame();
                         return
                     }
-                    data.snake.y++
-                    game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
-                    game.updateTail();
+                    this.$refs.canvas.updateSnakePosAndMove([snakePos[0], snakePos[1] + 1]);
+                    // game.updateTail();
                     break;
-    
+
                 case 'right':
-                    if (game.checkCollision(data.snake.x + 1, data.snake.y)) {
-                        game.stopGame();
+                    if (this.checkCollision(snakePos[0] + 1, snakePos[1])) {
+                        this.stopGame();
                         return
                     }
-                    data.snake.x++
-                    game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
-                    game.updateTail();
+                    this.$refs.canvas.updateSnakePosAndMove([snakePos[0] + 1, snakePos[1]]);
+                    // game.updateTail();
                     break;
     
                 default:
                     break;
             }
+        },
+        checkCollision(x, y) {
+            let collision = false;
+    
+            // collision with canvas walls
+            if (x === this.grid[0]) {
+                this.stopTicks();
+                collision = true;
+            } else if (x === 0) {
+                this.stopTicks();
+                collision = true;
+            } else if (y === this.grid[1]) {
+                this.stopTicks();
+                collision = true;
+            } else if (y === 0) {
+                this.stopTicks();
+                collision = true;
+            }
+    
+            // collision with obstacles
+            this.$refs.canvas.obstacles.map((obs) => {
+                if (x === obs.x && y === obs.y) {
+                    this.stopTicks();
+                    collision = true;
+                }
+            });
+    
+            // collision with tail
+            for (let t = 1; t < this.$refs.canvas.tail.length; t++) {
+                const tailPart = this.$refs.canvas.tail[t];
+                if (x === tailPart.x && y === tailPart.y) {
+                    this.stopTicks();
+                    collision = true;
+                }
+            }
+    
+            // collision with fruit
+            // data.fruit.map((fruit) => {
+            //     if (x === fruit.x && y === fruit.y) {
+            //         game.removeFruit(fruit.id, true);
+            //         game.extendTail();
+            //     }
+            // });
+    
+            return collision
         },
     },
     mounted() {

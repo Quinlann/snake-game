@@ -72,7 +72,7 @@ export default {
         },
         setControlStatus(status) {
             this.controlsStatus = status;
-        }
+        },
     },
     beforeMount() {
         document.addEventListener('keydown', this.keyHandler);

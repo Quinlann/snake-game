@@ -25,7 +25,7 @@ export default {
             let numberOfObstacles = Math.ceil((Math.floor(this.grid[0] / 20) * this.difficulty) / 2) + 1;
             for (let i = 0; i < numberOfObstacles; i++) {
                 this.addObstacle();
-                console.log(`${i}/${numberOfObstacles}`);
+                console.log(`Loading: ${i}/${numberOfObstacles}`);
             }
         },
         addObstacle() {
@@ -76,6 +76,12 @@ export default {
         },
         getSnakeDirection() {
             return this.$refs.SnakeHead.direction;
+        },
+        getSnakePos() {
+            return this.$refs.SnakeHead.pos;
+        },
+        updateSnakePosAndMove(newPos){
+            this.$refs.SnakeHead.placeAtNewPosition(newPos);
         }
     },
     mounted() {
