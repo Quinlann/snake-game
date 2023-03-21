@@ -11,11 +11,6 @@ const app = Vue.createApp({
             canvasHeight: 0,
             snakeSize: 30,
             cellSize: 0,
-            snake: {
-                x: 0,
-                y: 0,
-                direction: 'up'
-            },
             scores: [
                 {
                     name: 'David Hayter',
@@ -53,10 +48,6 @@ const app = Vue.createApp({
 
             this.cellSize = this.canvasWidth / this.grid[0];
         },
-        setStartPos() {
-            this.snake.x = Math.ceil(this.grid[0] / 2);
-            this.snake.y = Math.ceil(this.grid[1] / 2);
-        },
         loadUserCookie() {
             const cookieValues = document.cookie.split('; ').filter(row => row.startsWith('user_'));
         
@@ -82,10 +73,13 @@ const app = Vue.createApp({
             this.$refs.SplashScreen.hideSplashScreen();
             this.$refs.HighScores.hideHighScores();
 
-            // data.setStartPos();
-            
+            this.$refs.canvas.setSnakeStartPos();
 
             // game.placeAtPosition(nodes.snakeHead, [data.snake.x * data.cellSize, data.snake.y * data.cellSize]);
+            // [data.snake.x * data.cellSize, data.snake.y * data.cellSize]
+            this.$refs.canvas.placeSnakeAtPos();
+
+
             // game.addStartTail();
             // game.addObstacles();
             // game.renderObstacles();
@@ -111,15 +105,17 @@ const app = Vue.createApp({
     },
     mounted() {
         this.createGrid();
-        this.setStartPos();
+        this.$refs.canvas.setSnakeStartPos();
         this.loadUserCookie();
     },
     template: /* html */
     `
         <Canvas 
+            ref="canvas"
             @emit-canvas-width="handleCanvasWidth"
             @emit-canvas-height="handleCanvasHeight"
             :cellSize="cellSize"
+            :grid="grid"
         />
         <SplashScreen
             ref="SplashScreen"

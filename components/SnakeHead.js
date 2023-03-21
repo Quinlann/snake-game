@@ -1,8 +1,10 @@
 export default {
-    props: ['cellSize'],
+    props: ['cellSize','grid'],
     data() {
         return {
-            controlsStatus: 'normal'
+            controlsStatus: 'normal',
+            pos: [0,0],
+            direction: 'up'
         }
     },
     methods: {
@@ -29,6 +31,15 @@ export default {
         pressRight() {
             console.table('RIGHT');
         },
+        setStartPos() {
+            this.pos[0] = Math.ceil(this.grid[0] / 2);
+            this.pos[1] = Math.ceil(this.grid[1] / 2);
+        },
+        placeAtPosition() {
+            // console.log(this.$refs['snake-head']);
+            // node.style.left = `${pos[0]}px`;
+            // node.style.top = `${pos[1]}px`;
+        }
     },
     beforeMount() {
         document.addEventListener('keydown', this.keyHandler);
@@ -36,6 +47,6 @@ export default {
     mounted() {},
     template:/* html */
     `
-        <div id="snake-head" class="up" :style="{width: this.cellSize + 'px'}"></div>
+        <div ref="snake-head" id="snake-head" class="up" :style="{width: this.cellSize + 'px'}"></div>
     `
 }
