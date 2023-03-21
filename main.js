@@ -76,14 +76,12 @@ const app = Vue.createApp({
             this.$refs.canvas.placeSnakeStartPos();
             this.$refs.canvas.addStartTail();
             this.$refs.canvas.addObstacles();
-            // this.$refs.canvas.renderObstacles();
-            
-            // game.renderObstacles();
+            this.$refs.canvas.changeSnakeDirection('up');
 
-
-            // game.startTicks();
             // game.changeDirection('up');
+
             // data.controlsStatus = 'normal';
+            // game.startTicks();
             // game.startClock();
             console.log('startGame');
         },

@@ -68,6 +68,9 @@ export default {
                 }
             }
         },
+        changeSnakeDirection(direction) {
+            this.$refs.changeDirection(direction);
+        }
     },
     mounted() {
         // $emit

@@ -20,16 +20,16 @@ export default {
             }
         },
         pressUp() {
-            console.table('UP');
+            if (this.checkValidInput('up')) this.changeDirection('up');
         },
         pressLeft() {
-            console.table('LEFT');
+            if (this.checkValidInput('left')) this.changeDirection('left');
         },
         pressDown() {
-            console.table('DOWN');
+            if (this.checkValidInput('down')) this.changeDirection('down');
         },
         pressRight() {
-            console.table('RIGHT');
+            if (this.checkValidInput('right')) this.changeDirection('right');
         },
         updatePosition(newPos) {
             this.pos = newPos;
@@ -51,6 +51,24 @@ export default {
                     y: y
                 });
             }
+        },
+        changeDirection(direction) {
+            this.direction = direction;
+            this.$refs['snake-head'].classList.remove('up', 'left', 'down', 'right');
+            this.$refs['snake-head'].classList.add(this.direction);
+
+            // emmidiate response on key stroke, not wait for next tick
+            // game.stopTicks();
+            // game.tick();
+            // game.startTicks();
+        },
+        checkValidInput(direction) {
+            if (this.direction === direction) return false
+            if (direction === 'up' && this.direction === 'down') return false
+            if (direction === 'left' && this.direction === 'right') return false
+            if (direction === 'down' && this.direction === 'up') return false
+            if (direction === 'right' && this.direction === 'left') return false
+            return true
         },
     },
     beforeMount() {
