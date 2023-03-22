@@ -1,6 +1,7 @@
 export default {
     props: ['cellSize','grid','difficulty'],
     components: ['SnakeHead'],
+    emits: ['emit-canvas-width','emit-canvas-height','emit-end-loading'],
     data() {
         return {
             tail: [],
@@ -46,14 +47,12 @@ export default {
         },
         addObstacles() {
             // add more obstacles depending on screen width and difficulty level
-            const t0 = performance.now();
             let numberOfObstacles = Math.ceil((Math.floor(this.grid[0] / 20) * this.difficulty) / 2) + 1;
             for (let i = 0; i < numberOfObstacles; i++) {
                 this.addObstacle();
-                console.table(`Loading: ${i}/${numberOfObstacles}`);
+                console.log(`Loading:${i}/${numberOfObstacles}`);
             }
-            const t1 = performance.now();
-            console.table(`Adding obstacles took ${t1 - t0} milliseconds.`);
+            this.$emit('emit-end-loading');
         },
         addObstacle() {
             this.calcAvailableCells();
@@ -66,7 +65,6 @@ export default {
             });
         },
         removeObstacles() {
-            console.log(this.$refs.obstacle);
             if(!this.$refs.obstacle) return
 
             for (let o = 0; o < this.$refs.obstacle.length; o++) {
@@ -164,7 +162,6 @@ export default {
         this.$emit('emit-canvas-width', this.$refs.canvas.getBoundingClientRect().width);
         this.$emit('emit-canvas-height', this.$refs.canvas.getBoundingClientRect().height);
     },
-    emits: ['emit-canvas-width','emit-canvas-height'],
     template: /* html */
     `
         <div id="canvas" 

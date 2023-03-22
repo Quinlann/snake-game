@@ -2,10 +2,15 @@ import Canvas from './components/Canvas.js';
 import SnakeHead from './components/SnakeHead.js';
 import SplashScreen from './components/SplashScreen.js';
 import HighScores from './components/HighScores.js';
+import LoadingScreen from './components/LoadingScreen.js';
 
 const app = Vue.createApp({
+    components: ['Canvas','SplashScreen','HighScores','LoadingScreen'],
     data() {
         return {
+            loadingStart: 0,
+            loadingEnd: 0,
+            loadingCurrentNum: 0,
             grid: [0,0],
             canvasWidth: 0,
             canvasHeight: 0,
@@ -83,17 +88,24 @@ const app = Vue.createApp({
         startGame() {
             this.$refs.SplashScreen.hideSplashScreen();
             this.$refs.HighScores.hideHighScores();
+            
+            this.startLoading();
+        },
+        startLoading() {
+            this.loadingStart = performance.now();
+            this.$refs.LoadingScreen.showLoading();
+        },
+        loadingIsShowing() {
             this.$refs.canvas.placeSnakeStartPos();
             this.$refs.canvas.addStartTail();
             this.$refs.canvas.addObstacles();
             this.$refs.canvas.changeSnakeDirection('up');
             this.$refs.canvas.setControlStatus('normal');
+            this.$refs.LoadingScreen.hideLoading();
 
             this.startTicks();
-
-
             // game.startClock();
-            console.log('startGame');
+
         },
         stopGame() {
             this.$refs.canvas.setControlStatus('inactive');
@@ -208,6 +220,10 @@ const app = Vue.createApp({
     
             return collision
         },
+        handleEndLoading() {
+            this.loadingEnd = performance.now();
+            console.table(`Loading took ${this.loadingEnd - this.loadingStart} milliseconds.`);
+        }
     },
     mounted() {
         this.createGrid();
@@ -219,6 +235,7 @@ const app = Vue.createApp({
             ref="canvas"
             @emit-canvas-width="handleCanvasWidth"
             @emit-canvas-height="handleCanvasHeight"
+            @emit-end-loading="handleEndLoading"
             :cellSize="cellSize"
             :grid="grid"
             :difficulty="difficulty"
@@ -237,6 +254,10 @@ const app = Vue.createApp({
             :startGame="startGame"
             :resetGame="resetGame"
         />
+        <LoadingScreen
+            ref="LoadingScreen"
+            @emit-loading-showing="loadingIsShowing"
+        />
     `
 });
 
@@ -244,5 +265,6 @@ app.component('Canvas', Canvas);
 app.component('SnakeHead', SnakeHead);
 app.component('SplashScreen', SplashScreen);
 app.component('HighScores', HighScores);
+app.component('LoadingScreen', LoadingScreen);
 
 app.mount('#app');
