@@ -37,6 +37,13 @@ export default {
         removeTailEnd() {
             this.tail.shift();
         },
+        removeTail() {
+            if(!this.$refs.tailPart) return
+
+            for (let t = 0; t < this.$refs.tailPart.length; t++) {
+                this.tail.pop();
+            }
+        },
         addObstacles() {
             // add more obstacles depending on screen width and difficulty level
             const t0 = performance.now();
@@ -58,6 +65,14 @@ export default {
                 y: chosenCell[1]
             });
         },
+        removeObstacles() {
+            console.log(this.$refs.obstacle);
+            if(!this.$refs.obstacle) return
+
+            for (let o = 0; o < this.$refs.obstacle.length; o++) {
+                this.obstacles.pop();
+            }
+        },
         calcAvailableCells() {
 
             const tempObstaclesArr = [...this.obstacles],
@@ -66,7 +81,7 @@ export default {
             for (let i = 0; i < this.cells.length; i++) {
                 const cell = this.cells[i];
 
-                let cellIsOccupied = false;
+                let cellIsOccupied = false; 
 
                 // check if there is already an obstacle at that coor
                 const obstacleContainsCoor = tempObstaclesArr.some((coordinate) => coordinate.x === cell[0] && coordinate.y === cell[1]);
@@ -121,6 +136,7 @@ export default {
             }
         },
         createCells(cols, rows) {
+            this.cells = [];
             for (let r = 2; r <= rows-2; r++) {
                 for (let c = 2; c <= cols-2; c++) {
                     this.cells.push([c,r]);
@@ -160,8 +176,15 @@ export default {
                 :cellSize="cellSize"
                 :tail="tail"
             />
-            <div v-for="part in tail" class="tail" :key="part.id" :data-id="part.id" :style="{left: part.x * this.cellSize + 'px', top: part.y * this.cellSize + 'px', width: this.cellSize + 'px', height: this.cellSize + 'px'}"></div>
-            <div v-for="obs in obstacles" class="obstacle" :class="obs.type" :style="{left: obs.x * this.cellSize + 'px', top: obs.y * this.cellSize + 'px', width: this.cellSize + 'px',}"></div>
+            <div ref="tailPart" v-for="part in tail" class="tail" 
+                :key="part.id"
+                :data-id="part.id"
+                :style="{left: part.x * this.cellSize + 'px', top: part.y * this.cellSize + 'px', width: this.cellSize + 'px', height: this.cellSize + 'px'}"
+            ></div>
+            <div ref="obstacle" v-for="obs in obstacles" class="obstacle"
+                :class="obs.type"
+                :style="{left: obs.x * this.cellSize + 'px', top: obs.y * this.cellSize + 'px', width: this.cellSize + 'px',}"
+            ></div>
         </div>
     `
 }

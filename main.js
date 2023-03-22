@@ -89,18 +89,24 @@ const app = Vue.createApp({
             this.$refs.canvas.changeSnakeDirection('up');
             this.$refs.canvas.setControlStatus('normal');
 
-            // this.startTicks();
+            this.startTicks();
 
 
             // game.startClock();
             console.log('startGame');
         },
         stopGame() {
-            // console.log('stop game');
+            this.$refs.canvas.setControlStatus('inactive');
+            // game.stopClock();
+            // game.calcUserScore();
+            // data.renderScores();
+            this.showHighScores();
         },
         resetGame() {
-            // game.removeObstacles();
-            // game.removeTail();
+            this.$refs.canvas.createCells(this.grid[0], this.grid[1]);
+            this.$refs.canvas.removeObstacles();
+            this.$refs.canvas.removeTail();
+
             // game.resetFruitCounter();
             // data.resetTickSpeed();
             console.log('reset');
@@ -111,7 +117,7 @@ const app = Vue.createApp({
             }, this.speed);
         },
         stopTicks() {
-            // console.log('stopTicks');
+            clearInterval(this.gameTick);
         },
         tick() {
             const snakePos = this.$refs.canvas.getSnakePos();
