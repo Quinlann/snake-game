@@ -56,6 +56,8 @@ const app = Vue.createApp({
             if(this.grid[1] % 2==0) this.grid[1]--;
 
             this.cellSize = this.canvasWidth / this.grid[0];
+
+            this.$refs.canvas.createCells(this.grid[0], this.grid[1]);
         },
         loadUserCookie() {
             const cookieValues = document.cookie.split('; ').filter(row => row.startsWith('user_'));
@@ -87,14 +89,14 @@ const app = Vue.createApp({
             this.$refs.canvas.changeSnakeDirection('up');
             this.$refs.canvas.setControlStatus('normal');
 
-            this.startTicks();
+            // this.startTicks();
 
 
             // game.startClock();
             console.log('startGame');
         },
         stopGame() {
-            console.log('stop game');
+            // console.log('stop game');
         },
         resetGame() {
             // game.removeObstacles();
@@ -109,11 +111,9 @@ const app = Vue.createApp({
             }, this.speed);
         },
         stopTicks() {
-            console.log('stopTicks');
+            // console.log('stopTicks');
         },
         tick() {
-            console.log('tick');
-            // return
             const snakePos = this.$refs.canvas.getSnakePos();
 
             switch (this.$refs.canvas.getSnakeDirection()) {

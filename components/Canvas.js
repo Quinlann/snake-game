@@ -35,15 +35,18 @@ export default {
             this.removeTailEnd();
         },
         removeTailEnd() {
-            console.log(this.tail.shift());
+            this.tail.shift();
         },
         addObstacles() {
             // add more obstacles depending on screen width and difficulty level
+            const t0 = performance.now();
             let numberOfObstacles = Math.ceil((Math.floor(this.grid[0] / 20) * this.difficulty) / 2) + 1;
             for (let i = 0; i < numberOfObstacles; i++) {
                 this.addObstacle();
-                console.log(`Loading: ${i}/${numberOfObstacles}`);
+                console.table(`Loading: ${i}/${numberOfObstacles}`);
             }
+            const t1 = performance.now();
+            console.table(`Adding obstacles took ${t1 - t0} milliseconds.`);
         },
         addObstacle() {
             this.calcAvailableCells();
@@ -56,31 +59,70 @@ export default {
             });
         },
         calcAvailableCells() {
-            this.cells.length = 0;
+
+            const tempObstaclesArr = [...this.obstacles],
+            tempTailArr = [...this.tail];
+
+            for (let i = 0; i < this.cells.length; i++) {
+                const cell = this.cells[i];
+
+                let cellIsOccupied = false;
+
+                // check if there is already an obstacle at that coor
+                const obstacleContainsCoor = tempObstaclesArr.some((coordinate) => coordinate.x === cell[0] && coordinate.y === cell[1]);
+                if(obstacleContainsCoor) cellIsOccupied = true;
+
+                // check if there is a tail at that coor
+                const tailContainsCoor = tempTailArr.some((coordinate) => coordinate.x === cell[0] && coordinate.y === cell[1]);
+                if(tailContainsCoor) cellIsOccupied = true;
+                
+                // don't place anything on the same row or column as snake head
+                if(this.$refs.SnakeHead.pos[0] === cell[0] || this.$refs.SnakeHead.pos[1] === cell[1]) cellIsOccupied = true;
+
+                if(!cellIsOccupied) continue
+
+                this.cells.splice(i, 1);
+            }
+
+            return
+
             for (let r = 2; r <= this.grid[1]-2; r++) {
                 for (let c = 2; c <= this.grid[0]-2; c++) {
                     let cellIsOccupied = false;
                     
+                    /**
                     // check if there is already an obstacle at that coor
                     this.obstacles.map((obs) => {
                         if(obs.x === c && obs.y === r) cellIsOccupied = true;
                     });
+                    /**/
     
+                    /**
                     // check if there is already a fruit at that coor
                     // data.fruit.map((fruit) => {
                     //     if(fruit.x === c && fruit.y === r) cellIsOccupied = true;
                     // });
+                    /**/
     
+                    /**
                     // check if there is a tail at that coor
                     this.tail.map((tail) => {
                         if(tail.x === c && tail.y === r) cellIsOccupied = true;
                     });
+                    /**/
     
                     // don't place anything on the same row or column as snake head
                     if(this.$refs.SnakeHead.pos[0] === c || this.$refs.SnakeHead.pos[1] === r) cellIsOccupied = true;
                     
                     if(cellIsOccupied) continue
     
+                    this.cells.push([c,r]);
+                }
+            }
+        },
+        createCells(cols, rows) {
+            for (let r = 2; r <= rows-2; r++) {
+                for (let c = 2; c <= cols-2; c++) {
                     this.cells.push([c,r]);
                 }
             }
