@@ -48,7 +48,7 @@ export default {
             }
         },
         extendTail() {
-            this.addTail(this.$refs.SnakeHead.pos[0], this.$refs.SnakeHead.pos[0]);
+            this.addTail(this.$refs.SnakeHead.pos[0], this.$refs.SnakeHead.pos[1]);
         },
         addObstacles() {
             // add more obstacles depending on screen width and difficulty level
