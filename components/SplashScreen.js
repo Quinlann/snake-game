@@ -30,7 +30,7 @@ export default {
         <div id="splashscreen">
             <h1 id="splash-header">PEARL PLATE PYTHON</h1>
             <div id="splash-controls-container">
-                <input @input="handleUserName" type="text" id="username-input" placeholder="Enter your username"/>
+                <input @input="handleUserName" type="text" id="username-input" placeholder="Enter your username" value="Player 1"/>
                 <button id="splash-start-game-btn" @click="startGameBtn">START</button>
                 <button id="splash-highscore-btn" @click="highScoreBtn">HIGH SCORE</button>
             </div>

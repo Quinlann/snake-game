@@ -4,9 +4,10 @@ import SplashScreen from './components/SplashScreen.js';
 import HighScores from './components/HighScores.js';
 import LoadingScreen from './components/LoadingScreen.js';
 import GameStats from './components/GameStats.js';
+import UsernameStat from './components/UsernameStat.js';
 
 const app = Vue.createApp({
-    components: ['Canvas','SplashScreen','HighScores','LoadingScreen'],
+    components: ['Canvas','SplashScreen','HighScores','LoadingScreen','GameStats','UsernameStat'],
     data() {
         return {
             loadingStart: 0,
@@ -292,6 +293,9 @@ const app = Vue.createApp({
             :fruit="user.fruit"
             :time="user.time"
         />
+        <UsernameStat 
+            :userName="user.name"
+        />
     `
 });
 
@@ -301,5 +305,6 @@ app.component('SplashScreen', SplashScreen);
 app.component('HighScores', HighScores);
 app.component('LoadingScreen', LoadingScreen);
 app.component('GameStats', GameStats);
+app.component('UsernameStat', UsernameStat);
 
 app.mount('#app');
