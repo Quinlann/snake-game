@@ -3,6 +3,7 @@ import SnakeHead from './components/SnakeHead.js';
 import SplashScreen from './components/SplashScreen.js';
 import HighScores from './components/HighScores.js';
 import LoadingScreen from './components/LoadingScreen.js';
+import GameStats from './components/GameStats.js';
 
 const app = Vue.createApp({
     components: ['Canvas','SplashScreen','HighScores','LoadingScreen'],
@@ -45,6 +46,7 @@ const app = Vue.createApp({
             difficulty: 75,
             gameTick: null,
             speed: 200,
+            clock: null,
         }
     },
     methods: {
@@ -104,12 +106,12 @@ const app = Vue.createApp({
             this.$refs.LoadingScreen.hideLoading();
 
             this.startTicks();
-            // game.startClock();
+            this.startClock();
 
         },
         stopGame() {
             this.$refs.canvas.setControlStatus('inactive');
-            // game.stopClock();
+            this.stopClock();
             // game.calcUserScore();
             // data.renderScores();
             this.showHighScores();
@@ -223,7 +225,28 @@ const app = Vue.createApp({
         handleEndLoading() {
             this.loadingEnd = performance.now();
             console.table(`Loading took ${this.loadingEnd - this.loadingStart} milliseconds.`);
-        }
+        },
+        startClock() {
+            this.user.time = -1;
+            
+            this.updateClock();
+            
+            this.clock = setInterval(() => {
+                this.updateClock();
+            }, 1000);
+        },
+        stopClock() {
+            clearInterval(this.clock);
+        },
+        updateClock() {
+            this.user.time++;
+            // nodes.timeStatus.innerText = `Time: ${data.user.time}`;
+    
+            if (this.user.time % 4 === 0) {
+                const addedFruitNum = Math.floor(this.grid[0] / 10);
+                for (let f = 0; f < addedFruitNum; f++) this.$refs.canvas.addFruit();
+            }
+        },
     },
     mounted() {
         this.createGrid();
@@ -239,6 +262,9 @@ const app = Vue.createApp({
             :cellSize="cellSize"
             :grid="grid"
             :difficulty="difficulty"
+            :tick="tick"
+            :startTicks="startTicks"
+            :stopTicks="stopTicks"
         />
         <SplashScreen
             ref="SplashScreen"
@@ -258,6 +284,10 @@ const app = Vue.createApp({
             ref="LoadingScreen"
             @emit-loading-showing="loadingIsShowing"
         />
+        <GameStats
+            :fruit="user.fruit"
+            :time="user.time"
+        />
     `
 });
 
@@ -266,5 +296,6 @@ app.component('SnakeHead', SnakeHead);
 app.component('SplashScreen', SplashScreen);
 app.component('HighScores', HighScores);
 app.component('LoadingScreen', LoadingScreen);
+app.component('GameStats', GameStats);
 
 app.mount('#app');

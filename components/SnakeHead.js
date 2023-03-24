@@ -1,5 +1,5 @@
 export default {
-    props: ['cellSize'],
+    props: ['cellSize','tick','startTicks','stopTicks'],
     data() {
         return {
             controlsStatus: 'inactive',
@@ -48,9 +48,10 @@ export default {
             this.$refs['snake-head'].classList.add(this.direction);
 
             // emmidiate response on key stroke, not wait for next tick
-            // game.stopTicks();
-            // game.tick();
-            // game.startTicks();
+            // buggy.... snake gets too fast for some reason
+            // this.stopTicks();
+            // this.tick();
+            // this.startTicks();
         },
         checkValidInput(direction) {
             if (this.direction === direction) return false

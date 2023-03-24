@@ -1,5 +1,5 @@
 export default {
-    props: ['cellSize','grid','difficulty'],
+    props: ['cellSize','grid','difficulty','tick','startTicks','stopTicks'],
     components: ['SnakeHead'],
     emits: ['emit-canvas-width','emit-canvas-height','emit-end-loading'],
     data() {
@@ -8,6 +8,8 @@ export default {
             obstacles: [],
             cells: [],
             obstacleTypes: ['wall'],
+            fruit: [],
+            fruitTypes: ['flower'],
         }
     },
     methods: {
@@ -155,7 +157,66 @@ export default {
         },
         updateSnakePosAndMove(newPos){
             this.$refs.SnakeHead.placeAtNewPosition(newPos);
-        }
+        },
+        addFruit() {
+            console.log('adding fruit');
+
+            this.calcAvailableCells();
+
+            let chosenCell = this.cells[Math.floor(Math.random() * this.cells.length)],
+                fruitId = 0,
+                lifeSpan = (Math.random() * 20) + 10;
+
+            if (this.fruit.length > 0) {
+                fruitId = this.fruit[this.fruit.length - 1].id + 1;
+            }
+
+            let newFruitObj = {
+                id: fruitId,
+                type: this.fruitTypes[0],
+                x: chosenCell[0],
+                y: chosenCell[1]
+            }
+
+            this.fruit.push(newFruitObj);
+
+            console.log('this.fruit:',this.fruit);
+
+            // this.renderFruit(newFruitObj);
+
+            setTimeout(() => {
+                this.removeFruit(fruitId, false);
+            }, lifeSpan * 1000);
+        },
+        removeFruit(fruitId, givePoint) {
+            console.log('remove fruit:',this.fruit);
+            for (let f = 0; f < this.fruit.length; f++) {
+                let fruit = this.fruit[f];
+                if (fruitId === fruit.id) {
+                    this.fruit.splice(f, 1);
+    
+                    // let fruitNode = document.querySelector(`.fruit[data-fruit-id="${fruitId}"]`);
+                    // fruitNode.parentNode.removeChild(fruitNode);
+    
+                    break
+                }
+            }
+    
+            if (givePoint) {
+                data.user.fruit++;
+                game.updateFruitConter();
+                
+                // faster and faster speed, max speed = 100ms pr tick (not ready)
+                return
+                if(data.speed <= 100) {
+                    data.speed = 100;
+                    return
+                } 
+                game.stopTicks();
+                data.speed--;
+                game.startTicks();
+            }
+        },
     },
     mounted() {
         // $emit
@@ -172,15 +233,25 @@ export default {
                 ref="SnakeHead"
                 :cellSize="cellSize"
                 :tail="tail"
+                :tick="tick"
+                :startTicks="startTicks"
+                :stopTicks="stopTicks"
             />
             <div ref="tailPart" v-for="part in tail" class="tail" 
                 :key="part.id"
                 :data-id="part.id"
                 :style="{left: part.x * this.cellSize + 'px', top: part.y * this.cellSize + 'px', width: this.cellSize + 'px', height: this.cellSize + 'px'}"
             ></div>
+
             <div ref="obstacle" v-for="obs in obstacles" class="obstacle"
                 :class="obs.type"
-                :style="{left: obs.x * this.cellSize + 'px', top: obs.y * this.cellSize + 'px', width: this.cellSize + 'px',}"
+                :style="{left: obs.x * this.cellSize + 'px', top: obs.y * this.cellSize + 'px', width: this.cellSize + 'px'}"
+            ></div>
+
+            <div v-for="afruit in fruit" class="fruit"
+                :key="afruit.id"
+                :class="afruit.type"
+                :style="{left: afruit.x * this.cellSize + 'px', top: afruit.y * this.cellSize + 'px', width: this.cellSize + 'px'}"
             ></div>
         </div>
     `

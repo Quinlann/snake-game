@@ -126,6 +126,7 @@ button:hover {
     aspect-ratio: 1;
     background-image: url(./assets/fruit_texture.png);
     transform: translate(-50%, -50%);
+    background-size: 100%;
 }
 
 .tail {
