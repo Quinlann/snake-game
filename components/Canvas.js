@@ -1,7 +1,7 @@
 export default {
     props: ['cellSize','grid','difficulty','tick','startTicks','stopTicks'],
     components: ['SnakeHead'],
-    emits: ['emit-canvas-width','emit-canvas-height','emit-end-loading'],
+    emits: ['emit-canvas-width','emit-canvas-height','emit-end-loading','emit-add-fruit-point'],
     data() {
         return {
             tail: [],
@@ -159,8 +159,6 @@ export default {
             this.$refs.SnakeHead.placeAtNewPosition(newPos);
         },
         addFruit() {
-            console.log('adding fruit');
-
             this.calcAvailableCells();
 
             let chosenCell = this.cells[Math.floor(Math.random() * this.cells.length)],
@@ -180,16 +178,11 @@ export default {
 
             this.fruit.push(newFruitObj);
 
-            console.log('this.fruit:',this.fruit);
-
-            // this.renderFruit(newFruitObj);
-
             setTimeout(() => {
                 this.removeFruit(fruitId, false);
             }, lifeSpan * 1000);
         },
         removeFruit(fruitId, givePoint) {
-            console.log('remove fruit:',this.fruit);
             for (let f = 0; f < this.fruit.length; f++) {
                 let fruit = this.fruit[f];
                 if (fruitId === fruit.id) {
@@ -203,8 +196,9 @@ export default {
             }
     
             if (givePoint) {
-                data.user.fruit++;
-                game.updateFruitConter();
+                this.$emit('emit-add-fruit-point');
+                // this.user.fruit++;
+                // game.updateFruitConter();
                 
                 // faster and faster speed, max speed = 100ms pr tick (not ready)
                 return
@@ -216,7 +210,7 @@ export default {
                 data.speed--;
                 game.startTicks();
             }
-        },
+        }
     },
     mounted() {
         // $emit

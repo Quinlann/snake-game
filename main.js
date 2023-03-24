@@ -213,12 +213,12 @@ const app = Vue.createApp({
             }
     
             // collision with fruit
-            // data.fruit.map((fruit) => {
-            //     if (x === fruit.x && y === fruit.y) {
-            //         game.removeFruit(fruit.id, true);
-            //         game.extendTail();
-            //     }
-            // });
+            this.$refs.canvas.fruit.map((fruit) => {
+                if (x === fruit.x && y === fruit.y) {
+                    this.$refs.canvas.removeFruit(fruit.id, true);
+                    // game.extendTail();
+                }
+            });
     
             return collision
         },
@@ -247,6 +247,9 @@ const app = Vue.createApp({
                 for (let f = 0; f < addedFruitNum; f++) this.$refs.canvas.addFruit();
             }
         },
+        handleFruitPoint() {
+            this.user.fruit++;
+        }
     },
     mounted() {
         this.createGrid();
@@ -259,6 +262,7 @@ const app = Vue.createApp({
             @emit-canvas-width="handleCanvasWidth"
             @emit-canvas-height="handleCanvasHeight"
             @emit-end-loading="handleEndLoading"
+            @emit-add-fruit-point="handleFruitPoint"
             :cellSize="cellSize"
             :grid="grid"
             :difficulty="difficulty"
