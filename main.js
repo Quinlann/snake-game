@@ -83,6 +83,7 @@ const app = Vue.createApp({
             this.$refs.SplashScreen.showSplashScreen();
         },
         showHighScores() {
+            this.calcUserScore();
             this.$refs.HighScores.showHighScores();
         },
         updateUserName(name) {
@@ -113,8 +114,7 @@ const app = Vue.createApp({
         stopGame() {
             this.$refs.canvas.setControlStatus('inactive');
             this.stopClock();
-            // game.calcUserScore();
-            // data.renderScores();
+            this.calcUserScore();
             this.showHighScores();
         },
         resetGame() {
@@ -250,7 +250,24 @@ const app = Vue.createApp({
         },
         handleFruitPoint() {
             this.user.fruit++;
-        }
+        },
+        calcUserScore() {
+            const exisitingScore = this.scores.find(x => x.name === this.user.name);
+    
+            this.user.score = this.user.time + (this.user.fruit * 5);
+    
+            if (!exisitingScore) this.scores.push(Object.assign({}, this.user));
+            else if (exisitingScore && this.user.score > exisitingScore.score) {
+                Object.assign(exisitingScore, this.user);
+            }
+    
+            this.saveUserCookie(this.user);
+    
+            this.scores.sort((a, b) => b.score - a.score);
+        },
+        saveUserCookie(user) {
+            document.cookie = `user_${this.user.name}=${JSON.stringify(user)}; expires=Thu, 18 Dec 2023 12:00:00 UTC; path=/`;
+        },
     },
     mounted() {
         this.createGrid();
