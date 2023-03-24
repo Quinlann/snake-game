@@ -47,6 +47,9 @@ export default {
                 this.tail.pop();
             }
         },
+        extendTail() {
+            this.addTail(this.$refs.SnakeHead.pos[0], this.$refs.SnakeHead.pos[0]);
+        },
         addObstacles() {
             // add more obstacles depending on screen width and difficulty level
             let numberOfObstacles = Math.ceil((Math.floor(this.grid[0] / 20) * this.difficulty) / 2) + 1;
@@ -197,8 +200,6 @@ export default {
     
             if (givePoint) {
                 this.$emit('emit-add-fruit-point');
-                // this.user.fruit++;
-                // game.updateFruitConter();
                 
                 // faster and faster speed, max speed = 100ms pr tick (not ready)
                 return

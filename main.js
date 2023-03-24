@@ -216,7 +216,7 @@ const app = Vue.createApp({
             this.$refs.canvas.fruit.map((fruit) => {
                 if (x === fruit.x && y === fruit.y) {
                     this.$refs.canvas.removeFruit(fruit.id, true);
-                    // game.extendTail();
+                    this.$refs.canvas.extendTail();
                 }
             });
     
