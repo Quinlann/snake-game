@@ -182,6 +182,7 @@ export default {
             this.fruit.push(newFruitObj);
 
             setTimeout(() => {
+
                 this.removeFruit(fruitId, false);
             }, lifeSpan * 1000);
         },
@@ -211,7 +212,14 @@ export default {
                 data.speed--;
                 game.startTicks();
             }
-        }
+        },
+        removeAllFruit() {
+            if(!this.$refs.fruit) return
+
+            for (let o = 0; o < this.$refs.fruit.length; o++) {
+                this.fruit.pop();
+            }
+        },
     },
     mounted() {
         // $emit
@@ -244,6 +252,7 @@ export default {
             ></div>
 
             <div v-for="afruit in fruit" class="fruit"
+                ref="fruit"
                 :key="afruit.id"
                 :class="afruit.type"
                 :style="{left: afruit.x * this.cellSize + 'px', top: afruit.y * this.cellSize + 'px', width: this.cellSize + 'px'}"

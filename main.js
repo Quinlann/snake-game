@@ -119,12 +119,10 @@ const app = Vue.createApp({
         },
         resetGame() {
             this.$refs.canvas.createCells(this.grid[0], this.grid[1]);
-            this.$refs.canvas.removeObstacles();
             this.$refs.canvas.removeTail();
-
-            // game.resetFruitCounter();
-            // data.resetTickSpeed();
-            console.log('reset');
+            this.$refs.canvas.removeObstacles();
+            this.$refs.canvas.removeAllFruit();
+            this.resetFruitCounter();
         },
         startTicks() {
             this.gameTick = setInterval(() => {
@@ -241,7 +239,6 @@ const app = Vue.createApp({
         },
         updateClock() {
             this.user.time++;
-            // nodes.timeStatus.innerText = `Time: ${data.user.time}`;
     
             if (this.user.time % 4 === 0) {
                 const addedFruitNum = Math.floor(this.grid[0] / 10);
@@ -268,6 +265,9 @@ const app = Vue.createApp({
         saveUserCookie(user) {
             document.cookie = `user_${this.user.name}=${JSON.stringify(user)}; expires=Thu, 18 Dec 2023 12:00:00 UTC; path=/`;
         },
+        resetFruitCounter() {
+            this.user.fruit = 0;
+        }
     },
     mounted() {
         this.createGrid();
