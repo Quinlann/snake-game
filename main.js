@@ -64,8 +64,6 @@ const app = Vue.createApp({
             if(this.grid[1] % 2==0) this.grid[1]--;
 
             this.cellSize = this.canvasWidth / this.grid[0];
-
-            this.$refs.canvas.createCells(this.grid[0], this.grid[1]);
         },
         loadUserCookie() {
             const cookieValues = document.cookie.split('; ').filter(row => row.startsWith('user_'));
